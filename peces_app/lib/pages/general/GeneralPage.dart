@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
 import 'package:peces_app/pages/general/ResumenMuestreoPage.dart';
 import 'package:peces_app/service/Auth_Service.dart';
@@ -16,6 +18,7 @@ class _GeneralPageState extends State<GeneralPage> {
   final TextEditingController _nombreAddLote = TextEditingController();
   final TextEditingController _nombreDelLote = TextEditingController();
   AuthClass authClass = AuthClass();
+  UserController userController = Get.find();
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
   var usuarios = FirebaseFirestore.instance.collection('usuario');
   @override
@@ -28,7 +31,8 @@ class _GeneralPageState extends State<GeneralPage> {
           automaticallyImplyLeading: false,
           centerTitle: false,
           //Título de la barra
-          title: Text('¡Bienvenido!', style: estiloTexto(20)),
+          title: Obx(() => Text('¡Bienvenido ${userController.userEmail}!',
+              style: estiloTexto(20))),
           //Color de fondo de la barra
           backgroundColor: const Color(0xFF0077BB),
         ),
@@ -238,7 +242,8 @@ class _GeneralPageState extends State<GeneralPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => ResumenMuestreoPage(nLote: title, posLote: index)));
+                builder: (context) =>
+                    ResumenMuestreoPage(nLote: title, posLote: index)));
       },
       child: Container(
         //El ancho del widget será el del contexto
@@ -319,14 +324,14 @@ class _GeneralPageState extends State<GeneralPage> {
     for (var i = 0; i < lotesUsuario.length; i++) {
       if (user.docs[0]['lotes'][i] == 'Lote ' + nombreDelLote) {
         pos = i;
-      } 
+      }
     }
-    if(pos != 9999999) {
+    if (pos != 9999999) {
       lotesUsuario.removeAt(pos);
     } else {
       debugPrint('No se encuentra');
     }
-    
+
     //Actualizamos la información del usuario, añadiendo un lote a su n_lotes
     usuarios.doc(userID).update({'lotes': lotesUsuario});
   }

@@ -9,6 +9,7 @@ import 'package:peces_app/service/Auth_Service.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp().then((value) {
+    Get.put(UserController());
     runApp(const MyApp());
   });
 }
