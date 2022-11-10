@@ -23,7 +23,6 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool circulo = false;
   AuthClass authClass = AuthClass();
-  UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {

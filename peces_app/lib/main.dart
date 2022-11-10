@@ -1,7 +1,6 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:get/get_core/src/get_main.dart';
 import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
@@ -23,7 +22,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   AuthClass authClass = AuthClass();
-  
+
   Widget currentPage = const InicioSesionPage();
 
   @override
