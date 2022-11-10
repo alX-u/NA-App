@@ -3,11 +3,12 @@ import 'dart:developer';
 
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/RegistroPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../domain/controllers/user_controller.dart';
 
 class InicioSesionPage extends StatefulWidget {
   const InicioSesionPage({Key? key}) : super(key: key);
@@ -206,9 +207,9 @@ class _InicioSesionPage extends State<InicioSesionPage> {
       onTap: () async {
         try {
           //Obtenemos las credenciales del usuario para iniciar sesión
-          UserCredential userCredential = await auth.signInWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim());
+          await userController.signIn(
+              _emailController.text.trim(), _passwordController.text.trim());
+          //Seteamos el email de usuario de forma global
           userController.setUserEmail();
           //Vamos hacia la homepage
           Navigator.push(context,

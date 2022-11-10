@@ -1,10 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
 import 'package:peces_app/service/Auth_Service.dart';
+
+import 'domain/controllers/user_controller.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -23,7 +24,7 @@ class MyApp extends StatefulWidget {
 
 class _MyAppState extends State<MyApp> {
   AuthClass authClass = AuthClass();
-
+  UserController userController = Get.find();
   Widget currentPage = const InicioSesionPage();
 
   @override
@@ -37,7 +38,7 @@ class _MyAppState extends State<MyApp> {
 
   //Verificamos si ya hay una cuenta loggeada
   void verificarLoggeo() async {
-    String? token = await authClass.guardarToken();
+    String? token = await userController.getToken();
     if (token != null) {
       setState(() {
         currentPage = const GeneralPage();

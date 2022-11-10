@@ -2,10 +2,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-import 'package:peces_app/controllers/user_controller.dart';
+import 'package:peces_app/domain/constants/firebase_constants.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
 import 'package:peces_app/pages/general/ResumenMuestreoPage.dart';
-import 'package:peces_app/service/Auth_Service.dart';
+
+import '../../domain/controllers/user_controller.dart';
 
 class GeneralPage extends StatefulWidget {
   const GeneralPage({Key? key}) : super(key: key);
@@ -17,10 +18,9 @@ class GeneralPage extends StatefulWidget {
 class _GeneralPageState extends State<GeneralPage> {
   final TextEditingController _nombreAddLote = TextEditingController();
   final TextEditingController _nombreDelLote = TextEditingController();
-  AuthClass authClass = AuthClass();
   UserController userController = Get.find();
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
-  var usuarios = FirebaseFirestore.instance.collection('usuario');
+  var usuarios = userFirebase;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -56,7 +56,7 @@ class _GeneralPageState extends State<GeneralPage> {
                               //Botón de sí para cerrar sesión
                               TextButton(
                                   onPressed: () async {
-                                    await authClass.logOut();
+                                    await userController.logOut();
                                     //Nos movemos a la pantalla de inicio de sesión
                                     //Vamos hacia la página de Inicio de Sesión
                                     Navigator.pop(context, true);
@@ -115,7 +115,8 @@ class _GeneralPageState extends State<GeneralPage> {
                             TextButton(
                               child: const Text('OK'),
                               onPressed: () {
-                                deleteLote(_nombreDelLote.text.trim());
+                                deleteLote(_nombreDelLote.text.trim(),
+                                    userController.userEmail);
                                 Navigator.pop(context);
                               },
                             ),
@@ -163,7 +164,8 @@ class _GeneralPageState extends State<GeneralPage> {
                             TextButton(
                               child: const Text('OK'),
                               onPressed: () {
-                                addLote(_nombreAddLote.text.trim());
+                                addLote(_nombreAddLote.text.trim(),
+                                    userController.userEmail);
                                 Navigator.pop(context);
                               },
                             ),
@@ -187,8 +189,7 @@ class _GeneralPageState extends State<GeneralPage> {
         ),
         //Cuerpo de la page
         body: StreamBuilder(
-            stream:
-                FirebaseFirestore.instance.collection('usuario').snapshots(),
+            stream: userFirebase.snapshots(),
             builder: (context, AsyncSnapshot<QuerySnapshot> snapshot) {
               if (!snapshot.hasData) {
                 return const Center(
@@ -199,7 +200,7 @@ class _GeneralPageState extends State<GeneralPage> {
               //Guardo la posición del documento del usuario
               int pos = 0;
               //Utilizamos el email del usuario que se inició sesión
-              String? emailUsuario = authClass.auth.currentUser!.email;
+              String? emailUsuario = userController.userEmail;
               //Reviso la cantidad de lotes que tiene el usuario que inicio sesión
               for (var i = 0; i < snapshot.data!.docs.length; i++) {
                 if (snapshot.data!.docs[i]['email'] == emailUsuario) {
@@ -265,10 +266,8 @@ class _GeneralPageState extends State<GeneralPage> {
                         children: [
                           //Espacio entre el borde del container y el ícono
                           const SizedBox(width: 15),
-                          Container(
-                              height: 33,
-                              width: 36,
-                              child: const Icon(Icons.check)),
+                          const SizedBox(
+                              height: 33, width: 36, child: Icon(Icons.check)),
                           const SizedBox(width: 15),
                           //Texto de la card
                           Text(title,
@@ -287,9 +286,9 @@ class _GeneralPageState extends State<GeneralPage> {
   }
 
   //Método por el cual añadimos un lote a la cuenta de lotes del usuario
-  void addLote(String nombreAddLote) async {
+  void addLote(String nombreAddLote, String email) async {
     //Utilizamos el email del usuario que se inició sesión
-    String? emailUsuario = authClass.auth.currentUser!.email;
+    String? emailUsuario = email;
     //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
     debugPrint(emailUsuario);
     //Realizamos una consulta en la base de datos sobre el usuario con ese email
@@ -306,9 +305,9 @@ class _GeneralPageState extends State<GeneralPage> {
     usuarios.doc(userID).update({'lotes': lotesUsuario});
   }
 
-  void deleteLote(String nombreDelLote) async {
+  void deleteLote(String nombreDelLote, String email) async {
     //Utilizamos el email del usuario que se inició sesión
-    String? emailUsuario = authClass.auth.currentUser!.email;
+    String? emailUsuario = email;
     //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
     debugPrint(emailUsuario);
     //Realizamos una consulta en la base de datos sobre el usuario con ese email

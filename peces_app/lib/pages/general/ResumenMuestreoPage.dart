@@ -1,6 +1,8 @@
 // ignore_for_file: file_names
 
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peces_app/domain/controllers/user_controller.dart';
 import 'package:peces_app/model/Muestreo.dart';
 import 'package:peces_app/pages/AddMuestreo.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
@@ -23,6 +25,7 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
   AuthClass authClass = AuthClass();
   Muestreo? muestreo;
   List<Muestreo>? muestreos = [];
+  UserController userController = Get.find();
 
   //Iniciamos consultando si existe información ya añadida a los muestreos
   _fetchUltimoMuestreo() async {
@@ -30,7 +33,7 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
     String nombreLote = widget.nLote;
     //Extraemos el spreadsheet y la worksheet
     try {
-      await sheetsAPI.init(authClass.auth.currentUser!.email!, nombreLote);
+      await sheetsAPI.init(userController.userEmail, nombreLote);
       //Realizamos la función que le indica a la clase sheets qué información buscará
       final info = await sheetsAPI.imprimirUltima();
       //Imprimo la info en formato json (reviso que no sea nulo; de serlo, se imprime '')
