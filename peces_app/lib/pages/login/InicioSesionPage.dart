@@ -1,5 +1,9 @@
 // ignore_for_file: file_names
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/RegistroPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -19,6 +23,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool circulo = false;
   AuthClass authClass = AuthClass();
+  UserController userController = Get.put(UserController());
 
   @override
   Widget build(BuildContext context) {

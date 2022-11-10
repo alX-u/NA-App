@@ -1,5 +1,8 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:get/get_core/src/get_main.dart';
+import 'package:peces_app/controllers/user_controller.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
 import 'package:peces_app/service/Auth_Service.dart';
@@ -19,8 +22,8 @@ class MyApp extends StatefulWidget {
 }
 
 class _MyAppState extends State<MyApp> {
-  
   AuthClass authClass = AuthClass();
+  
   Widget currentPage = const InicioSesionPage();
 
   @override
@@ -34,18 +37,18 @@ class _MyAppState extends State<MyApp> {
 
   //Verificamos si ya hay una cuenta loggeada
   void verificarLoggeo() async {
-    String? token = await authClass.guardarToken(); 
-    if (token!=null) {
+    String? token = await authClass.guardarToken();
+    if (token != null) {
       setState(() {
-        currentPage = const GeneralPage(); 
+        currentPage = const GeneralPage();
       });
     }
   }
-  
+
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      //Procedemos a la página de Registro de Usuarios
+      //Procedemos a la página de Inicio de sesión de Usuarios
       home: currentPage,
     );
   }
