@@ -46,8 +46,8 @@ class sheetsAPI {
         user.docs[0]['spreadsheet'] == '') {
       //Creamos una nueva spreadsheet
       debugPrint(userEmail);
-      final spreadsheet = await _gsheets
-          .createSpreadsheet(userEmail, worksheetTitles: ['Lote 1']);
+      final spreadsheet =
+          await _gsheets.createSpreadsheet(userEmail, worksheetTitles: [lote]);
       //Comparto el spreadsheet con la cuenta del developer
       spreadsheet.share('app-peces@app-peces.iam.gserviceaccount.com');
       spreadsheet.share('app.peces@gmail.com');
