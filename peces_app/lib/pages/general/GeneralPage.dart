@@ -239,12 +239,11 @@ class _GeneralPageState extends State<GeneralPage> {
   Widget loteItem(String title, int index) {
     return InkWell(
       onTap: () {
+        //Obtenemos de forma global los valores del nombre del lote y su posición
+        userController.getUserLote(title, index);
         //Aquí enviamos también el index para saber a qué lote accede la persona
-        Navigator.push(
-            context,
-            MaterialPageRoute(
-                builder: (context) =>
-                    ResumenMuestreoPage(nLote: title, posLote: index)));
+        Navigator.push(context,
+            MaterialPageRoute(builder: (context) => ResumenMuestreoPage()));
       },
       child: Container(
         //El ancho del widget será el del contexto

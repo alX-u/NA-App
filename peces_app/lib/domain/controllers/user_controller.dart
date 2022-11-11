@@ -6,8 +6,12 @@ import 'package:peces_app/service/Auth_Service.dart';
 class UserController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
   final RxString _userEmail = ''.obs;
+  final RxString _userLote = 'Ejemplo'.obs;
+  final RxInt _userLotePos = 0.obs;
 
   String get userEmail => _userEmail.value;
+  String get userLote => _userLote.value;
+  int get userLotePos => _userLotePos.value;
 
   void setUserEmail() {
     AuthClass authClass = AuthClass();
@@ -37,5 +41,11 @@ class UserController extends GetxController {
   Future<String?> getToken() async {
     AuthClass authClass = AuthClass();
     return await authClass.guardarToken();
+  }
+
+  //Aquí obtenemos el nombre y la posición del lote que decida el usuario en el menú principal
+  void getUserLote(String nombre, int pos) {
+    _userLote.value = nombre;
+    _userLotePos.value = pos;
   }
 }
