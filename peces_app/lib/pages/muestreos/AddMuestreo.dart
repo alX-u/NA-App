@@ -106,12 +106,13 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                     //Input de los peces sembrados
                     //inputLabel('Peces Sembrados:'),
                     const SizedBox(height: 15),
-                    formField('Peces Sembrados:',_pecesSembradosController),
+                    formField('Peces Sembrados:', _pecesSembradosController),
                     const SizedBox(height: 20),
                     //Input del peso de la siembra por unidad
                     //inputLabel('Peso de la siembra por unidad (en Gr):'),
                     const SizedBox(height: 15),
-                    formField('Peso de la siembra por unidad (en Gr):', _pesoSiembraPorUnidadController),
+                    formField('Peso de la siembra por unidad (en Gr):',
+                        _pesoSiembraPorUnidadController),
                     const SizedBox(height: 20),
                     //Input de la fecha
                     inputLabel('Fecha:'),
@@ -125,7 +126,7 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                     formField('No. del Muestreo:', _noMuestreoController),
                     //Input Peces Captura
                     const SizedBox(height: 20),
-                   // inputLabel('Peces Captura:'),
+                    // inputLabel('Peces Captura:'),
                     const SizedBox(height: 15),
                     formField('Peces Captura:', _pecesCapturaController),
                     //Input Peso Captura
@@ -247,11 +248,12 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                       blurRadius: 3.0,
                       color: Color.fromARGB(255, 0, 0, 0))
                 ]),
-            
+
             // border: InputBorder.none,
-            focusedBorder:  const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 1)),
-            enabledBorder:  const OutlineInputBorder(
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+            enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white, width: 1.3))
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ),
@@ -304,7 +306,8 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(13), color: Color.fromARGB(255, 70, 76, 83)),
+            borderRadius: BorderRadius.circular(13),
+            color: Color.fromARGB(255, 70, 76, 83)),
         child: Center(
           child: Text(
             getTextFecha(),
@@ -397,18 +400,14 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
-            ]),
             borderRadius: BorderRadius.circular(13),
-            color: Colors.white),
-        child: Center(
-          child: Text(
-            'Enviar Muestreo',
-            style: estiloTexto(18),
-          ),
+            color: Color.fromARGB(255, 101, 170, 254)),
+        child: const Center(
+          child: Text('Enviar Muestreo',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500)),
         ),
       ),
     );

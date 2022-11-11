@@ -34,9 +34,9 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
         //Aplicamos un coloreado degradado para el background (se puede cambiar)
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-          Color(0xFF42008D),
-          Color(0xFF26007B),
-          Color(0xFF0A0068)
+          Color.fromARGB(255, 44, 44, 44),
+          Color.fromARGB(255, 34, 34, 34),
+          Color.fromARGB(255, 14, 14, 14)
         ])),
         child: SingleChildScrollView(
           child: Column(
@@ -129,7 +129,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
 
             // border: InputBorder.none,
             focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 1)),
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 101, 170, 254), width: 3)),
             enabledBorder: const OutlineInputBorder(
                 borderSide: BorderSide(color: Colors.white, width: 1.3))
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
@@ -199,7 +200,7 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(13),
-            color: Color.fromARGB(255, 40, 102, 173)),
+            color: Color.fromARGB(255, 70, 76, 83)),
         child: Center(
           child: Text(
             getTextFecha(),
@@ -266,9 +267,9 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
             gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
+              Color.fromARGB(255, 101, 170, 254),
+              Color.fromARGB(255, 101, 170, 254),
+              Color.fromARGB(255, 101, 170, 254)
             ]),
             borderRadius: BorderRadius.circular(13),
             color: Colors.white),
