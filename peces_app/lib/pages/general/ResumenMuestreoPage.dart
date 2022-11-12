@@ -63,18 +63,18 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: const Color(0xFF0369AF),
+      backgroundColor: const Color.fromARGB(255, 77, 82, 92),
       appBar: AppBar(
-          leading: IconButton(
-              onPressed: () {
-                Navigator.push(
-                    context,
-                    MaterialPageRoute(
-                        builder: (context) => const GeneralPage()));
-              },
-              icon: const Icon(Icons.home)),
-          automaticallyImplyLeading: false,
-          title: Text(userController.userLote, style: estiloTexto(20))),
+        leading: IconButton(
+            onPressed: () {
+              Navigator.push(context,
+                  MaterialPageRoute(builder: (context) => const GeneralPage()));
+            },
+            icon: const Icon(Icons.home)),
+        automaticallyImplyLeading: false,
+        title: Text(userController.userLote, style: estiloTexto(20)),
+        backgroundColor: const Color.fromARGB(255, 55, 57, 65),
+      ),
       body: Column(
         children: [
           const SizedBox(height: 40),
@@ -116,6 +116,13 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
               blurRadius: 3.0,
               color: Color.fromARGB(255, 0, 0, 0))
         ]);
+  }
+
+  TextStyle estiloTextoAzul(double size) {
+    return TextStyle(
+      color: Colors.white,
+      fontSize: size,
+    );
   }
 
   //Widget del botón de buscar último muestreo realizado
@@ -170,17 +177,12 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width - 50,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
-            ]),
             borderRadius: BorderRadius.circular(13),
-            color: Colors.white),
+            color: Color.fromARGB(255, 101, 170, 254)),
         child: Center(
           child: Text(
             'Añadir Muestreo',
-            style: estiloTexto(18),
+            style: estiloTextoAzul(18),
           ),
         ),
       ),
@@ -200,17 +202,12 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width - 50,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
-            ]),
             borderRadius: BorderRadius.circular(13),
-            color: Colors.white),
+            color: Color.fromARGB(255, 101, 170, 254)),
         child: Center(
           child: Text(
             'Añadir Muestreo de Siembra',
-            style: estiloTexto(18),
+            style: estiloTextoAzul(18),
           ),
         ),
       ),
@@ -230,17 +227,12 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width - 50,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
-            ]),
             borderRadius: BorderRadius.circular(13),
-            color: Colors.white),
+            color: Color.fromARGB(255, 101, 170, 254)),
         child: Center(
           child: Text(
             'Añadir Muestreo de Cosecha',
-            style: estiloTexto(18),
+            style: estiloTextoAzul(18),
           ),
         ),
       ),

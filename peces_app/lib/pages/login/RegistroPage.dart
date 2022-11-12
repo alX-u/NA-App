@@ -38,8 +38,8 @@ class _RegistroPageState extends State<RegistroPage> {
           //Añadimos un color azul
           decoration: const BoxDecoration(
             image: DecorationImage(
-              image: AssetImage("assets/registrationpage.jpg"),
-              fit: BoxFit.cover),
+                image: AssetImage("assets/registrationpage.jpg"),
+                fit: BoxFit.cover),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -89,16 +89,36 @@ class _RegistroPageState extends State<RegistroPage> {
                       ])),
               const SizedBox(height: 20),
               //Input para el nombre del usuario
-              itemTexto('Nombre Completo', _nombreController, false),
+              itemTexto(
+                  'Nombre Completo',
+                  const Icon(MdiIcons.account,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _nombreController,
+                  false),
               const SizedBox(height: 10),
               //Input text para el email
-              itemTexto('Email', _emailController, false),
+              itemTexto(
+                  'Email',
+                  const Icon(MdiIcons.email,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _emailController,
+                  false),
               const SizedBox(height: 10),
               //Input text para la contraseña
-              itemTexto('Contraseña', _passwordController, true),
+              itemTexto(
+                  'Contraseña',
+                  const Icon(MdiIcons.lock,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _passwordController,
+                  true),
               const SizedBox(height: 15),
               //Confirmar Contraseña
-              itemTexto('Confirmar Contraseña', _repasswordController, true),
+              itemTexto(
+                  'Confirmar Contraseña',
+                  const Icon(MdiIcons.lock,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _repasswordController,
+                  true),
               const SizedBox(height: 15),
               //Botón de registrarse
               boton('Regístrarse', _emailController.text.trim(),
@@ -152,8 +172,8 @@ class _RegistroPageState extends State<RegistroPage> {
   }
 
   //Widget para los textfields de información
-  Widget itemTexto(
-      String name, TextEditingController controller, bool ocultarTexto) {
+  Widget itemTexto(String name, Icon icono, TextEditingController controller,
+      bool ocultarTexto) {
     return Container(
       width: MediaQuery.of(context).size.width - 70,
       height: 50,
@@ -162,6 +182,7 @@ class _RegistroPageState extends State<RegistroPage> {
         style: const TextStyle(color: Colors.white),
         controller: controller,
         decoration: InputDecoration(
+            prefixIcon: icono,
             labelText: name,
             labelStyle: const TextStyle(
                 fontSize: 15,

@@ -39,7 +39,7 @@ class _GeneralPageState extends State<GeneralPage> {
           )),
 
           //Color de fondo de la barra
-          backgroundColor: Color.fromARGB(255, 77, 82, 92),
+          backgroundColor: Color.fromARGB(255, 55, 57, 65),
         ),
         //Barra de abajo
         bottomNavigationBar: BottomNavigationBar(
@@ -85,7 +85,7 @@ class _GeneralPageState extends State<GeneralPage> {
                 child: Container(
                   child: const Icon(
                     Icons.logout_rounded,
-                    size: 50,
+                    size: 30,
                     color: Colors.white,
                   ),
                 ),
@@ -135,7 +135,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   child: Container(
                     child: const Icon(
                       Icons.delete,
-                      size: 50,
+                      size: 30,
                       color: Colors.white,
                     ),
                   ),
@@ -183,7 +183,7 @@ class _GeneralPageState extends State<GeneralPage> {
                   },
                   child: const Icon(
                     Icons.add,
-                    size: 50,
+                    size: 30,
                     color: Colors.white,
                   ),
                 ),

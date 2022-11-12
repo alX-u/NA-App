@@ -88,10 +88,20 @@ class _InicioSesionPage extends State<InicioSesionPage> {
                       ])),
               const SizedBox(height: 20),
               //Input text para el email
-              itemTexto('Email', _emailController, false),
+              itemTexto(
+                  'Email',
+                  const Icon(MdiIcons.email,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _emailController,
+                  false),
               const SizedBox(height: 10),
               //Input text para la contraseña
-              itemTexto('Contraseña', _passwordController, true),
+              itemTexto(
+                  'Contraseña',
+                  const Icon(MdiIcons.lock,
+                      color: Color.fromARGB(255, 101, 170, 254)),
+                  _passwordController,
+                  true),
               const SizedBox(height: 15),
               //Botón encargado de realizar el ingreso
               boton('Ingresar'),
@@ -182,8 +192,8 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   }
 
   //Widget para los textfield de llenado de información
-  Widget itemTexto(
-      String name, TextEditingController controller, bool verTexto) {
+  Widget itemTexto(String name, Icon icono, TextEditingController controller,
+      bool verTexto) {
     return Container(
       width: MediaQuery.of(context).size.width - 70,
       height: 50,
@@ -192,6 +202,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
         style: const TextStyle(color: Colors.white),
         obscureText: verTexto,
         decoration: InputDecoration(
+            prefixIcon: icono,
             labelText: name,
             labelStyle: const TextStyle(
                 fontSize: 15,
