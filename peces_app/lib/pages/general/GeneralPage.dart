@@ -26,7 +26,7 @@ class _GeneralPageState extends State<GeneralPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         //Color de fondo de la page en general
-        backgroundColor: Color.fromARGB(255, 101, 170, 254),
+        backgroundColor: Color.fromARGB(255, 77, 82, 92),
         //Barra de arriba
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -39,13 +39,13 @@ class _GeneralPageState extends State<GeneralPage> {
           )),
 
           //Color de fondo de la barra
-          backgroundColor: Color.fromARGB(255, 101, 170, 254),
+          backgroundColor: Color.fromARGB(255, 77, 82, 92),
         ),
         //Barra de abajo
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.white,
           unselectedFontSize: 14,
-          backgroundColor: const Color(0xFF084A76),
+          backgroundColor: Color.fromARGB(255, 58, 59, 61),
           fixedColor: Colors.white,
           items: [
             //Botón de cerrar sesión

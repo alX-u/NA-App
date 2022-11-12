@@ -171,14 +171,9 @@ class _InicioSesionPage extends State<InicioSesionPage> {
             Text(
               'Ingresa Con Google',
               style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.black,
-                  shadows: <Shadow>[
-                    Shadow(
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 3.0,
-                        color: Color.fromARGB(255, 0, 0, 0))
-                  ]),
+                fontSize: 16,
+                color: Colors.black,
+              ),
             )
           ]),
         ),
