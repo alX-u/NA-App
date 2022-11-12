@@ -38,7 +38,8 @@ class _RegistroPageState extends State<RegistroPage> {
           //Añadimos un color azul
           decoration: const BoxDecoration(
             image: DecorationImage(
-                image: AssetImage("assets/bg1.jpg"), fit: BoxFit.cover),
+              image: AssetImage("assets/registrationpage.jpg"),
+              fit: BoxFit.cover),
           ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
