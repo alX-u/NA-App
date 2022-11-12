@@ -22,7 +22,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
   var usuarios = userFirebase;
   // Initial Selected Value
-  String dropdownvalue = 'Escoja una siembra';
+  String dropdownvalue = 'Escoja una Siembra';
   // List of items in our dropdown menu
   var items = [
     'Item 1',
@@ -78,8 +78,9 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                     Text('Registra tu muestreo de cosecha:',
                         style: estiloTexto(28)),
                     const SizedBox(height: 30),
-                    //Campo que indica la siembra a la que pertenece la cosecha a realizar
+                    //Campo que indica la siembra sobre la que se hará la cosecha
                     listaDeSiembras(),
+                    const SizedBox(height: 15),
                     //Campo que indica la biomasa final de la siembra
                     formField('Biomasa Final', biomasaFinalController)
                   ],
@@ -213,20 +214,15 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
 
   Widget listaDeSiembras() {
     return DropdownButton(
-      value: dropdownvalue,
-      icon: const Icon(Icons.keyboard_arrow_down),
-      items: items.map((String items) {
-        return DropdownMenuItem(
-          value: items,
-          child: Text(items),
-        );
-      }).toList(),
-      onChanged: (String? newValue) {
-        setState(() {
-          dropdownvalue = newValue!;
-        });
-      },
-    );
+        items: items.map((String item) {
+          return DropdownMenuItem(child: Text(item), value: item);
+        }).toList(),
+        onChanged: (_value) => {
+              setState(() {
+                dropdownvalue = _value.toString();
+              })
+            },
+        hint: Text(dropdownvalue));
   }
 
   //Widget del botón para enviar el muestreo
