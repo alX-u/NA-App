@@ -219,6 +219,7 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             const Icon(MdiIcons.calendar, color: Colors.white),
+            const SizedBox(width: 5),
             Text(
               getTextFecha(),
               style: estiloTexto(18),
