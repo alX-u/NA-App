@@ -7,6 +7,7 @@ import 'package:peces_app/model/Muestreo.dart';
 import 'package:peces_app/pages/muestreos/AddMuestreo.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/general/UltimoVsPenultimoMuestreo.dart';
+import 'package:peces_app/pages/muestreos/AddMuestroCosecha.dart';
 import 'package:peces_app/service/Auth_Service.dart';
 import 'package:peces_app/service/sheets.dart';
 
@@ -87,6 +88,9 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
           const SizedBox(height: 15),
           //Botón para añadir un muestreo
           botonAdd(),
+          //Botón para añadir un muestreo de cosecha
+          const SizedBox(height: 15),
+          botonAddCosecha(),
           const SizedBox(height: 30),
           Center(
               child: Text('Último peso promedio registrado:',
@@ -206,6 +210,36 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
         child: Center(
           child: Text(
             'Añadir Muestreo de Siembra',
+            style: estiloTexto(18),
+          ),
+        ),
+      ),
+    );
+  }
+
+  //Widget añadir botón de cosechas
+  Widget botonAddCosecha() {
+    return InkWell(
+      onTap: () async {
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const AddMuestreoCosecha()));
+      },
+      child: Container(
+        height: 60,
+        width: MediaQuery.of(context).size.width - 50,
+        decoration: BoxDecoration(
+            gradient: const LinearGradient(colors: [
+              Color(0xFFEC3E1E),
+              Color(0xFFDE300B),
+              Color(0xFFC40806)
+            ]),
+            borderRadius: BorderRadius.circular(13),
+            color: Colors.white),
+        child: Center(
+          child: Text(
+            'Añadir Muestreo de Cosecha',
             style: estiloTexto(18),
           ),
         ),

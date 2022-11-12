@@ -184,9 +184,11 @@ class _RegistroPageState extends State<RegistroPage> {
             var usuarios = userFirebase;
             //Añadimos el usuario a la base de datos
             List<String> lotes = [];
+            List<Map> muestreoSiembra = [];
             await usuarios.add({
               'propietario': _nombreController.text.trim(),
               'lotes': lotes,
+              'muestreo_siembra': muestreoSiembra,
               'email': _emailController.text.trim(),
               'spreadsheet': ''
             });

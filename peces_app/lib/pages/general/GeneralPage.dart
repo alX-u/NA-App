@@ -176,12 +176,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     //Borramos el campo
                     _nombreAddLote.clear();
                   },
-                  child: Container(
-                    child: const Icon(
-                      Icons.add,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 50,
+                    color: Colors.white,
                   ),
                 ),
                 label: 'Añadir Lote')
@@ -242,8 +240,10 @@ class _GeneralPageState extends State<GeneralPage> {
         //Obtenemos de forma global los valores del nombre del lote y su posición
         userController.getUserLote(title, index);
         //Aquí enviamos también el index para saber a qué lote accede la persona
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResumenMuestreoPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ResumenMuestreoPage()));
       },
       child: Container(
         //El ancho del widget será el del contexto
