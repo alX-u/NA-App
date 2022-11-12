@@ -48,7 +48,18 @@ class _InicioSesionPage extends State<InicioSesionPage> {
                 children: const [
                   SizedBox(width: 100),
                   Icon(MdiIcons.shipWheel, color: Colors.white, size: 43),
-                  Text('NA App',
+                  Text('NA',
+                      style: TextStyle(
+                          fontSize: 38,
+                          color: Color(0xFF65AAFE),
+                          fontWeight: FontWeight.bold,
+                          shadows: <Shadow>[
+                            Shadow(
+                                offset: Offset(2.0, 2.0),
+                                blurRadius: 3.0,
+                                color: Color.fromARGB(255, 0, 0, 0))
+                          ])),
+                  Text(' App',
                       style: TextStyle(
                           fontSize: 38,
                           color: Colors.white,
@@ -98,7 +109,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
                     },
                     child: const Text('¡Regístrate ya AQUÍ!',
                         style: TextStyle(
-                            color: Colors.white,
+                            color: Color(0xFF65AAFE),
                             fontSize: 16,
                             shadows: <Shadow>[
                               Shadow(
@@ -152,11 +163,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
         height: 55,
         //Carta que representa el botón de ingreso con Google
         child: Card(
-<<<<<<< Updated upstream
-          color: const Color(0xFF9E1711),
-=======
           color: const Color(0xFFFFFFFF),
->>>>>>> Stashed changes
           child:
               Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
             Icon(MdiIcons.google, color: Colors.black),
