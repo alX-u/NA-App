@@ -1,6 +1,9 @@
+import 'dart:ui';
+
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 
 import '../../domain/constants/firebase_constants.dart';
 import '../../domain/controllers/user_controller.dart';
@@ -213,16 +216,30 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   }
 
   Widget listaDeSiembras() {
-    return DropdownButton(
+    return DropdownButtonFormField(
         items: items.map((String item) {
-          return DropdownMenuItem(child: Text(item), value: item);
+          return DropdownMenuItem(
+              child: Text(item, style: const TextStyle(color: Colors.white)),
+              value: item);
         }).toList(),
         onChanged: (_value) => {
               setState(() {
                 dropdownvalue = _value.toString();
               })
             },
-        hint: Text(dropdownvalue));
+        hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
+        icon: const Icon(
+          MdiIcons.fishbowl,
+          color: Colors.blueAccent,
+        ),
+        dropdownColor: Colors.blueAccent,
+        decoration: const InputDecoration(
+            labelText: 'Siembra',
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            labelStyle: TextStyle(
+              color: Colors.white,
+            )));
   }
 
   //Widget del botón para enviar el muestreo
