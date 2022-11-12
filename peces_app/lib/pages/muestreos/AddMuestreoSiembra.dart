@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:peces_app/domain/controllers/user_controller.dart';
 import 'package:peces_app/service/sheets.dart';
 
@@ -76,11 +77,18 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
                         style: estiloTexto(28)),
                     const SizedBox(height: 30),
                     //Input de los peces sembrados
-                    formField('Peces Sembrados', _pecesSembradosController),
+                    formField(
+                        'Peces Sembrados',
+                        _pecesSembradosController,
+                        const Icon(MdiIcons.fish,
+                            color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 20),
                     //Input del peso de la siembra por unidad
-                    formField('Biomasa Inicial (en Gr)',
-                        _pesoSiembraPorUnidadController),
+                    formField(
+                        'Biomasa Inicial (en Gr)',
+                        _pesoSiembraPorUnidadController,
+                        const Icon(MdiIcons.weight,
+                            color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 20),
                     //Fecha
                     botonFecha(),
@@ -111,7 +119,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
   }
 
   //Widget de los form fields donde el usuario colocará su información
-  Widget formField(String textname, TextEditingController controller) {
+  Widget formField(
+      String textname, TextEditingController controller, Icon icono) {
     return Container(
       height: 55,
       width: MediaQuery.of(context).size.width,
@@ -120,6 +129,7 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
+            prefixIcon: icono,
             labelText: textname,
             labelStyle: const TextStyle(
                 fontSize: 15,
@@ -205,11 +215,15 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(13),
             color: Color.fromARGB(255, 70, 76, 83)),
-        child: Center(
-          child: Text(
-            getTextFecha(),
-            style: estiloTexto(18),
-          ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            const Icon(MdiIcons.calendar, color: Colors.white),
+            Text(
+              getTextFecha(),
+              style: estiloTexto(18),
+            )
+          ],
         ),
       ),
     );
