@@ -40,7 +40,7 @@ dependencies:
   flutter_email_sender: 
 
   # The following adds the Cupertino Icons font to your application.
-  # Use with the CupertinoIcons class for iOS style icons.
+  # Use with the CupertinoIcons class for iOS style icons.bvfn  
   cupertino_icons: ^1.0.2
 
 dev_dependencies:

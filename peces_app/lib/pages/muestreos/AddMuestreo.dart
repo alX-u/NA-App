@@ -65,9 +65,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
         //Aplicamos un coloreado degradado para el background (se puede cambiar)
         decoration: const BoxDecoration(
             gradient: LinearGradient(colors: [
-          Color(0xFF42008D),
-          Color(0xFF26007B),
-          Color(0xFF0A0068)
+          Color.fromARGB(255, 44, 44, 44),
+          Color.fromARGB(255, 34, 34, 34),
+          Color.fromARGB(255, 14, 14, 14)
         ])),
         child: SingleChildScrollView(
           child: Column(
@@ -82,9 +82,8 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         Navigator.push(
                             context,
                             MaterialPageRoute(
-                                builder: (context) => ResumenMuestreoPage(
-                                    nLote: widget.nLote,
-                                    posLote: widget.posLote)));
+                                builder: (context) =>
+                                    const ResumenMuestreoPage()));
                       },
                       icon: const Icon(Icons.keyboard_arrow_left,
                           color: Colors.white, size: 30)),
@@ -105,14 +104,15 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(12)),
                     const SizedBox(height: 30),
                     //Input de los peces sembrados
-                    inputLabel('Peces Sembrados:'),
+                    //inputLabel('Peces Sembrados:'),
                     const SizedBox(height: 15),
-                    formField(_pecesSembradosController),
+                    formField('Peces Sembrados:', _pecesSembradosController),
                     const SizedBox(height: 20),
                     //Input del peso de la siembra por unidad
-                    inputLabel('Peso de la siembra por unidad (en Gr):'),
+                    //inputLabel('Peso de la siembra por unidad (en Gr):'),
                     const SizedBox(height: 15),
-                    formField(_pesoSiembraPorUnidadController),
+                    formField('Peso de la siembra por unidad (en Gr):',
+                        _pesoSiembraPorUnidadController),
                     const SizedBox(height: 20),
                     //Input de la fecha
                     inputLabel('Fecha:'),
@@ -121,19 +121,19 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                     botonFecha(),
                     //Input No. del Muestreo
                     const SizedBox(height: 20),
-                    inputLabel('No. del Muestreo:'),
+                    //inputLabel('No. del Muestreo:'),
                     const SizedBox(height: 15),
-                    formField(_noMuestreoController),
+                    formField('No. del Muestreo:', _noMuestreoController),
                     //Input Peces Captura
                     const SizedBox(height: 20),
-                    inputLabel('Peces Captura:'),
+                    // inputLabel('Peces Captura:'),
                     const SizedBox(height: 15),
-                    formField(_pecesCapturaController),
+                    formField('Peces Captura:', _pecesCapturaController),
                     //Input Peso Captura
                     const SizedBox(height: 20),
-                    inputLabel('Peso Captura:'),
+                    //inputLabel('Peso Captura:'),
                     const SizedBox(height: 15),
-                    formField(_pesoCapturaController),
+                    formField('Peso Captura:', _pesoCapturaController),
                     //Input Peso Promedio (en gramos)
                     const SizedBox(height: 20),
                     inputLabel('Peso Promedio (en gramos):'),
@@ -144,9 +144,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(18)),
                     //Input de respectiva Semana
                     const SizedBox(height: 20),
-                    inputLabel('Semana:'),
+                    //inputLabel('Semana:'),
                     const SizedBox(height: 15),
-                    formField(_semanaController),
+                    formField('Semana:', _semanaController),
                     //Input de la Biomasa Parcial en Kg
                     const SizedBox(height: 20),
                     inputLabel('Biomasa Parcial (en Kg):'),
@@ -157,9 +157,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(20)),
                     //Input de Observaciones
                     const SizedBox(height: 20),
-                    inputLabel('Observaciones:'),
+                    //inputLabel('Observaciones:'),
                     const SizedBox(height: 15),
-                    formField(_observacionesController),
+                    formField('Observaciones:', _observacionesController),
                     //Input de Ganancia Semanal
                     const SizedBox(height: 20),
                     inputLabel('Ganancia Semanal:'),
@@ -170,9 +170,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(20)),
                     //Input de peso meta
                     const SizedBox(height: 20),
-                    inputLabel('Peso Meta:'),
+                    //inputLabel('Peso Meta:'),
                     const SizedBox(height: 15),
-                    formField(_pesoMetaController),
+                    formField('Peso Meta:', _pesoMetaController),
                     //Input de % meta
                     const SizedBox(height: 20),
                     inputLabel('Meta %:'),
@@ -183,9 +183,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(20)),
                     //Input de % alimento
                     const SizedBox(height: 20),
-                    inputLabel('Alimento %:'),
+                    //inputLabel('Alimento %:'),
                     const SizedBox(height: 15),
-                    formField(_porcentajeAlimentoController),
+                    formField('Alimento %:', _porcentajeAlimentoController),
                     //Input de Q Alimento
                     const SizedBox(height: 20),
                     inputLabel('Q Alimento:'),
@@ -196,9 +196,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                         style: estiloTexto(20)),
                     //Input de Mortalidad
                     const SizedBox(height: 20),
-                    inputLabel('Mortalidad:'),
+                    //inputLabel('Mortalidad:'),
                     const SizedBox(height: 15),
-                    formField(_mortalidadController),
+                    formField('Mortalidad:', _mortalidadController),
                     const SizedBox(height: 35),
                     //Botón de enviar la información
                     botonEnviar()
@@ -229,17 +229,34 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
   }
 
   //Widget de los form fields donde el usuario colocará su información
-  Widget formField(TextEditingController controller) {
+  Widget formField(String textname, TextEditingController controller) {
     return Container(
       height: 55,
       width: MediaQuery.of(context).size.width,
-      decoration: BoxDecoration(
-          color: Colors.white, borderRadius: BorderRadius.circular(13)),
+      /*decoration: BoxDecoration(
+          color: Colors.white, borderRadius: BorderRadius.circular(13)),*/
       child: TextFormField(
         controller: controller,
-        decoration: const InputDecoration(
-            border: InputBorder.none,
-            contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)),
+        decoration: InputDecoration(
+            labelText: textname,
+            labelStyle: const TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                shadows: <Shadow>[
+                  Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Color.fromARGB(255, 0, 0, 0))
+                ]),
+
+            // border: InputBorder.none,
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 1.3))
+            //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
+            ),
         style: const TextStyle(
           color: Colors.black,
           fontSize: 16,
@@ -289,7 +306,8 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(13), color: Colors.blue[900]),
+            borderRadius: BorderRadius.circular(13),
+            color: Color.fromARGB(255, 70, 76, 83)),
         child: Center(
           child: Text(
             getTextFecha(),
@@ -382,18 +400,14 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
         height: 60,
         width: MediaQuery.of(context).size.width,
         decoration: BoxDecoration(
-            gradient: const LinearGradient(colors: [
-              Color(0xFFEC3E1E),
-              Color(0xFFDE300B),
-              Color(0xFFC40806)
-            ]),
             borderRadius: BorderRadius.circular(13),
-            color: Colors.white),
-        child: Center(
-          child: Text(
-            'Enviar Muestreo',
-            style: estiloTexto(18),
-          ),
+            color: Color.fromARGB(255, 101, 170, 254)),
+        child: const Center(
+          child: Text('Enviar Muestreo',
+              style: TextStyle(
+                  color: Colors.white,
+                  fontSize: 18,
+                  fontWeight: FontWeight.w500)),
         ),
       ),
     );

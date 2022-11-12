@@ -48,9 +48,7 @@ class _UltimoMuestreoPageState extends State<UltimoMuestreoPage> {
                       Navigator.push(
                           context,
                           MaterialPageRoute(
-                              builder: (context) => ResumenMuestreoPage(
-                                  nLote: widget.nLote,
-                                  posLote: widget.posLote)));
+                              builder: (context) => const ResumenMuestreoPage()));
                     },
                     icon: const Icon(Icons.keyboard_arrow_left,
                         color: Colors.white, size: 30)),

@@ -1,11 +1,11 @@
 // ignore_for_file: file_names
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:firebase_auth/firebase_auth.dart';
+import 'package:get/get.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
-import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
-import 'package:peces_app/service/Auth_Service.dart';
+
+import '../../domain/constants/firebase_constants.dart';
+import '../../domain/controllers/user_controller.dart';
 
 class RegistroPage extends StatefulWidget {
   const RegistroPage({Key? key}) : super(key: key);
@@ -15,14 +15,13 @@ class RegistroPage extends StatefulWidget {
 }
 
 class _RegistroPageState extends State<RegistroPage> {
-  FirebaseAuth auth = FirebaseAuth.instance;
   final TextEditingController _nombreController = TextEditingController();
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   final TextEditingController _repasswordController = TextEditingController();
 
   bool circulo = false;
-  AuthClass authClass = AuthClass();
+  UserController userController = Get.find();
 
   //Build del contexto
   @override
@@ -91,7 +90,8 @@ class _RegistroPageState extends State<RegistroPage> {
               itemTexto('Confirmar Contraseña', _repasswordController, true),
               const SizedBox(height: 15),
               //Botón de registrarse
-              boton('Regístrarse'),
+              boton('Regístrarse', _emailController.text.trim(),
+                  _passwordController.text.trim()),
               const SizedBox(height: 15),
               //Texto en pantalla sobre ir a inicio de sesión
               Row(mainAxisAlignment: MainAxisAlignment.center, children: [
@@ -140,40 +140,6 @@ class _RegistroPageState extends State<RegistroPage> {
         ]);
   }
 
-  //Widget para el botón de Google
-  Widget googleBoton() {
-    return InkWell(
-      onTap: () async {
-        await authClass.googleSignIn(context);
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => const GeneralPage()));
-      },
-      child: Container(
-        width: MediaQuery.of(context).size.width - 70,
-        height: 55,
-        //Carta que representa el botón de ingreso con Google
-        child: Card(
-          color: const Color(0xFF9E1711),
-          child:
-              Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
-            Text(
-              'Regístrate Con Google',
-              style: TextStyle(
-                  fontSize: 16,
-                  color: Colors.white,
-                  shadows: <Shadow>[
-                    Shadow(
-                        offset: Offset(2.0, 2.0),
-                        blurRadius: 3.0,
-                        color: Color.fromARGB(255, 0, 0, 0))
-                  ]),
-            )
-          ]),
-        ),
-      ),
-    );
-  }
-
   //Widget para los textfields de información
   Widget itemTexto(
       String name, TextEditingController controller, bool ocultarTexto) {
@@ -204,7 +170,7 @@ class _RegistroPageState extends State<RegistroPage> {
   }
 
   //Widget para el botón de registro
-  Widget boton(String nombreBoton) {
+  Widget boton(String nombreBoton, String email, String password) {
     return InkWell(
       onTap: () async {
         setState(() {
@@ -214,12 +180,9 @@ class _RegistroPageState extends State<RegistroPage> {
         if (_passwordController.text.trim() ==
             _repasswordController.text.trim()) {
           try {
-            UserCredential userCredential =
-                await auth.createUserWithEmailAndPassword(
-                    email: _emailController.text.trim(),
-                    password: _passwordController.text.trim());
+            await userController.signUp(email, password);
             //Accedemos a la collection
-            var usuarios = FirebaseFirestore.instance.collection('usuario');
+            var usuarios = userFirebase;
             //Añadimos el usuario a la base de datos
             List<String> lotes = [];
             await usuarios.add({
@@ -228,7 +191,6 @@ class _RegistroPageState extends State<RegistroPage> {
               'email': _emailController.text.trim(),
               'spreadsheet': ''
             });
-            print(userCredential.user!.email);
             setState(() {
               circulo = false;
             });
