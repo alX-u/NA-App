@@ -239,12 +239,12 @@ class _RegistroPageState extends State<RegistroPage> {
       child: Container(
         width: MediaQuery.of(context).size.width - 70,
         height: 55,
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Color(0xFF65AAFE)),
         child: Center(
             child: circulo
                 ? const CircularProgressIndicator(color: Colors.black)
                 : Text(nombreBoton,
-                    style: const TextStyle(color: Colors.black, fontSize: 16))),
+                    style: const TextStyle(color: Colors.white, fontSize: 16))),
       ),
     );
   }

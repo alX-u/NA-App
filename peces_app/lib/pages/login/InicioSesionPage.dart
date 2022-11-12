@@ -152,7 +152,11 @@ class _InicioSesionPage extends State<InicioSesionPage> {
         height: 55,
         //Carta que representa el botón de ingreso con Google
         child: Card(
+<<<<<<< Updated upstream
           color: const Color(0xFF9E1711),
+=======
+          color: const Color(0xFFFFFFFF),
+>>>>>>> Stashed changes
           child:
               Row(mainAxisAlignment: MainAxisAlignment.center, children: const [
             Icon(MdiIcons.google, color: Colors.black),
@@ -161,7 +165,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
               'Ingresa Con Google',
               style: TextStyle(
                   fontSize: 16,
-                  color: Colors.white,
+                  color: Colors.black,
                   shadows: <Shadow>[
                     Shadow(
                         offset: Offset(2.0, 2.0),
@@ -231,13 +235,13 @@ class _InicioSesionPage extends State<InicioSesionPage> {
       child: Container(
         width: MediaQuery.of(context).size.width - 70,
         height: 55,
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Color(0xFF65AAFE)),
         child: Center(
             //Cambiamos el texto con un círculo de carga
             child: circulo
                 ? const CircularProgressIndicator(color: Colors.black)
                 : Text(nombre,
-                    style: const TextStyle(color: Colors.black, fontSize: 16))),
+                    style: const TextStyle(color: Colors.white, fontSize: 16))),
       ),
     );
   }
