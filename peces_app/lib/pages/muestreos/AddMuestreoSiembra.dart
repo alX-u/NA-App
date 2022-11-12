@@ -24,6 +24,7 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
       TextEditingController();
   final TextEditingController _pesoSiembraPorUnidadController =
       TextEditingController();
+  final TextEditingController _areaController = TextEditingController();
   DateTime? _fechaController;
   String? fecha;
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
@@ -87,7 +88,14 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
                     formField(
                         'Biomasa Inicial (en Gr)',
                         _pesoSiembraPorUnidadController,
-                        const Icon(MdiIcons.weight,
+                        const Icon(MdiIcons.weightGram,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 20),
+                    //Input que indica el área del lote
+                    formField(
+                        'Área del lote (m2)',
+                        _areaController,
+                        const Icon(MdiIcons.square,
                             color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 20),
                     //Fecha

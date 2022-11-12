@@ -19,7 +19,12 @@ class AddMuestreoCosecha extends StatefulWidget {
 
 class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   UserController userController = Get.find();
+  final TextEditingController pecesCosechadosController =
+      TextEditingController();
   final TextEditingController biomasaFinalController = TextEditingController();
+  final TextEditingController produccionFinalController =
+      TextEditingController();
+  final TextEditingController rendimientoController = TextEditingController();
   DateTime? _fechaController;
   String? fecha;
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
@@ -84,8 +89,35 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                     //Campo que indica la siembra sobre la que se hará la cosecha
                     listaDeSiembras(),
                     const SizedBox(height: 15),
+                    //Campo que indica los peces cosechados
+                    formField(
+                        'Peces Cosechados',
+                        pecesCosechadosController,
+                        const Icon(MdiIcons.fish,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 15),
                     //Campo que indica la biomasa final de la siembra
-                    formField('Biomasa Final', biomasaFinalController)
+                    formField(
+                        'Biomasa Final',
+                        biomasaFinalController,
+                        const Icon(MdiIcons.weightGram,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 15),
+                    //Campo que indica la producción final (esto tiene que calcularse)
+                    formField(
+                        'Producción Final',
+                        produccionFinalController,
+                        const Icon(MdiIcons.chartLine,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 15),
+                    //Campo que indica el rendimiento (esto tiene que calcularse)
+                    formField(
+                        'Rendimiento',
+                        rendimientoController,
+                        const Icon(MdiIcons.chartBox,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 15),
+                    botonEnviar()
                   ],
                 ),
               )
@@ -111,7 +143,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   }
 
   //Widget de los form fields donde el usuario colocará su información
-  Widget formField(String textname, TextEditingController controller) {
+  Widget formField(
+      String textname, TextEditingController controller, Icon icono) {
     return Container(
       height: 55,
       width: MediaQuery.of(context).size.width,
@@ -120,6 +153,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
+            prefixIcon: icono,
             labelText: textname,
             labelStyle: const TextStyle(
                 fontSize: 15,
@@ -230,9 +264,9 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
         hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
         icon: const Icon(
           MdiIcons.fishbowl,
-          color: Colors.blueAccent,
+          color: Color.fromARGB(255, 101, 170, 254),
         ),
-        dropdownColor: Colors.blueAccent,
+        dropdownColor: const Color.fromARGB(255, 101, 170, 254),
         decoration: const InputDecoration(
             labelText: 'Siembra',
             enabledBorder: UnderlineInputBorder(
