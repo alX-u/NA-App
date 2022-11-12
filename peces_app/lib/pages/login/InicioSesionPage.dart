@@ -36,7 +36,10 @@ class _InicioSesionPage extends State<InicioSesionPage> {
           height: MediaQuery.of(context).size.height,
           width: MediaQuery.of(context).size.width,
           //Añadimos un color azul
-          color: Colors.lightBlue[900],
+          decoration: const BoxDecoration(
+            image: DecorationImage(
+                image: AssetImage("assets/loginpage.jpg"), fit: BoxFit.cover),
+          ),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
