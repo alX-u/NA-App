@@ -49,7 +49,18 @@ class _RegistroPageState extends State<RegistroPage> {
                 children: const [
                   SizedBox(width: 100),
                   Icon(MdiIcons.shipWheel, color: Colors.white, size: 43),
-                  Text('NA App',
+                  Text('NA',
+                      style: TextStyle(
+                          fontSize: 38,
+                          color: Color(0xFF65AAFE),
+                          fontWeight: FontWeight.bold,
+                          shadows: <Shadow>[
+                            Shadow(
+                                offset: Offset(2.0, 2.0),
+                                blurRadius: 3.0,
+                                color: Color.fromARGB(255, 0, 0, 0))
+                          ])),
+                  Text(' App',
                       style: TextStyle(
                           fontSize: 38,
                           color: Colors.white,
@@ -106,7 +117,7 @@ class _RegistroPageState extends State<RegistroPage> {
                   },
                   child: const Text('¡Inicia sesión AQUÍ!',
                       style: TextStyle(
-                          color: Colors.white,
+                          color: Color(0xFF65AAFE),
                           fontSize: 16,
                           shadows: <Shadow>[
                             Shadow(
@@ -239,12 +250,12 @@ class _RegistroPageState extends State<RegistroPage> {
       child: Container(
         width: MediaQuery.of(context).size.width - 70,
         height: 55,
-        decoration: const BoxDecoration(color: Colors.white),
+        decoration: const BoxDecoration(color: Color(0xFF65AAFE)),
         child: Center(
             child: circulo
                 ? const CircularProgressIndicator(color: Colors.black)
                 : Text(nombreBoton,
-                    style: const TextStyle(color: Colors.black, fontSize: 16))),
+                    style: const TextStyle(color: Colors.white, fontSize: 16))),
       ),
     );
   }
