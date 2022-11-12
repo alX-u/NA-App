@@ -2,10 +2,12 @@
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:flutter_secure_storage/flutter_secure_storage.dart';
+
+import '../domain/controllers/user_controller.dart';
 
 class AuthClass {
   static final GoogleSignIn _googleSignIn = GoogleSignIn(
@@ -19,6 +21,7 @@ class AuthClass {
 
   final FirebaseAuth auth = FirebaseAuth.instance;
   final storage = const FlutterSecureStorage();
+  UserController userController = Get.find();
 
   Future<void> googleSignIn(BuildContext context) async {
     try {
@@ -54,6 +57,8 @@ class AuthClass {
               'spreadsheet': ''
             });
           }
+          //Se setea la variable global del email del usuario
+          userController.setUserEmail();
         } on Exception catch (e) {
           final snackbar = SnackBar(content: Text(e.toString()));
           ScaffoldMessenger.of(context).showSnackBar(snackbar);

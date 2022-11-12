@@ -1,11 +1,9 @@
-// ignore_for_file: file_names
+// ignore_for_file: file_names, camel_case_types
 // ignore: camel_case_types
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/services.dart';
-import 'package:flutter_email_sender/flutter_email_sender.dart';
 import 'package:gsheets/gsheets.dart';
+import 'package:peces_app/domain/constants/firebase_constants.dart';
 import 'package:peces_app/model/Muestreo.dart';
 import 'package:peces_app/model/UserFields.dart';
 import 'package:peces_app/service/Auth_Service.dart';
@@ -36,7 +34,7 @@ class sheetsAPI {
   //Método para inicilizar la spreadsheet
   static Future init(String userEmail, String lote) async {
     //Inicializamos la colección
-    var usuarios = FirebaseFirestore.instance.collection('usuario');
+    var usuarios = userFirebase;
     //Buscamos al usuario con el email correspondiente
     var query = usuarios.where('email', isEqualTo: userEmail);
     //Obtenemos al usuario
@@ -48,12 +46,12 @@ class sheetsAPI {
         user.docs[0]['spreadsheet'] == '') {
       //Creamos una nueva spreadsheet
       debugPrint(userEmail);
-      final spreadsheet = await _gsheets
-          .createSpreadsheet(userEmail, worksheetTitles: ['Lote 1']);
+      final spreadsheet =
+          await _gsheets.createSpreadsheet(userEmail, worksheetTitles: [lote]);
       //Comparto el spreadsheet con la cuenta del developer
       spreadsheet.share('app-peces@app-peces.iam.gserviceaccount.com');
       spreadsheet.share('app.peces@gmail.com');
-      spreadsheet.share(userEmail, role: PermRole.writer);
+      spreadsheet.share(userEmail, role: PermRole.reader);
       //Obtenemos el spreadsheet id de esta spreadsheet
       String spreadsheetId = spreadsheet.id;
       //Añadimos el spreadsheetId del usuario a la base de datos

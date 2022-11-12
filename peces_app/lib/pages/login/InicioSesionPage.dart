@@ -1,10 +1,14 @@
 // ignore_for_file: file_names
+import 'dart:developer';
+
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/RegistroPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:peces_app/service/Auth_Service.dart';
 import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+
+import '../../domain/controllers/user_controller.dart';
 
 class InicioSesionPage extends StatefulWidget {
   const InicioSesionPage({Key? key}) : super(key: key);
@@ -18,7 +22,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   bool circulo = false;
-  AuthClass authClass = AuthClass();
+  UserController userController = Get.find();
 
   @override
   Widget build(BuildContext context) {
@@ -120,7 +124,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
               Text('O', style: estiloTexto(18)),
               const SizedBox(height: 15),
               //Botón de inicio de sesión con Google
-              googleBoton(),
+              Obx(() => googleBoton(userController.userEmail)),
               const SizedBox(height: 20),
             ],
           ),
@@ -145,11 +149,11 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   }
 
   //Widget para el botón de Google
-  Widget googleBoton() {
+  Widget googleBoton(String emailUsuario) {
     return InkWell(
       onTap: () async {
-        await authClass.googleSignIn(context);
-        if (authClass.auth.currentUser!.email != null) {
+        await userController.googleSignIn(context);
+        if (emailUsuario != '') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
         }
@@ -217,9 +221,10 @@ class _InicioSesionPage extends State<InicioSesionPage> {
       onTap: () async {
         try {
           //Obtenemos las credenciales del usuario para iniciar sesión
-          UserCredential userCredential = await auth.signInWithEmailAndPassword(
-              email: _emailController.text.trim(),
-              password: _passwordController.text.trim());
+          await userController.signIn(
+              _emailController.text.trim(), _passwordController.text.trim());
+          //Seteamos el email de usuario de forma global
+          userController.setUserEmail();
           //Vamos hacia la homepage
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
