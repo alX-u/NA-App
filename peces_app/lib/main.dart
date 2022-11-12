@@ -50,6 +50,7 @@ class _MyAppState extends State<MyApp> {
   Widget build(BuildContext context) {
     return MaterialApp(
       //Procedemos a la página de Inicio de sesión de Usuarios
+      theme: ThemeData(fontFamily: "Kanit"),
       home: currentPage,
     );
   }

@@ -1,9 +1,11 @@
 // ignore_for_file: file_names
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:peces_app/domain/controllers/user_controller.dart';
 import 'package:peces_app/service/sheets.dart';
 
+import '../../domain/constants/firebase_constants.dart';
 import '../../model/UserFields.dart';
 import '../general/GeneralPage.dart';
 import '../general/ResumenMuestreoPage.dart';
@@ -23,6 +25,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
       TextEditingController();
   DateTime? _fechaController;
   String? fecha;
+  //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
+  var usuarios = userFirebase;
 
   @override
   Widget build(BuildContext context) {
@@ -68,14 +72,14 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Registra tu muestreo de siembra: ',
+                    Text('Registra tu muestreo de siembra:',
                         style: estiloTexto(28)),
                     const SizedBox(height: 30),
                     //Input de los peces sembrados
-                    formField('Peces Sembrados: ', _pecesSembradosController),
+                    formField('Peces Sembrados', _pecesSembradosController),
                     const SizedBox(height: 20),
                     //Input del peso de la siembra por unidad
-                    formField('Peso de la siembra por unidad (en Gr):',
+                    formField('Biomasa Inicial (en Gr)',
                         _pesoSiembraPorUnidadController),
                     const SizedBox(height: 20),
                     //Fecha
@@ -136,7 +140,7 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ),
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 16,
         ),
       ),
@@ -215,21 +219,32 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
   Widget botonEnviar() {
     return InkWell(
       onTap: () async {
-        String nombreLote = userController.userLote;
+        // String nombreLote = userController.userLote;
         //Inicializamos la clase sheetsAPI, pasando el email del usuario, esto decide la spreadsheet y la worksheet
-        await sheetsAPI.init(userController.userEmail, nombreLote);
+        // await sheetsAPI.init(userController.userEmail, nombreLote);
         //Establecemos la información que vamos a pasar al spreadsheet en formato JSON
-        final info = {
-          UserFields.pecesSembrados: _pecesSembradosController.text.trim(),
-          UserFields.pesoSiembraPorUnidad:
-              _pesoSiembraPorUnidadController.text.trim(),
-          UserFields.fecha: fecha,
+        // final info = {
+        //   UserFields.pecesSembrados: _pecesSembradosController.text.trim(),
+        //   UserFields.pesoSiembraPorUnidad:
+        //       _pesoSiembraPorUnidadController.text.trim(),
+        //   UserFields.fecha: fecha,
+        // };
+
+        //Mapeamos la información extraída del formulario
+        Map map = {
+          'lote': userController.userLote,
+          'fecha': fecha,
+          'peces_sembrados': _pecesSembradosController.text.trim(),
+          'biomasa_inicial': _pesoSiembraPorUnidadController.text.trim()
         };
         //Nos aseguramos de que la información no esté vacía
         if (_fechaController != null) {
           try {
             //Llamamos a la función que añadirá la información a la spreadsheet
-            await sheetsAPI.insert([info]);
+            // await sheetsAPI.insert([info]);
+
+            //Enviamos la información a la base de datos
+            addMuestreoSiembra(userController.userEmail, map);
             //Se mostrará después de realizar el registro
             showDialog(
                 context: context,
@@ -281,5 +296,26 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
         ),
       ),
     );
+  }
+
+  void addMuestreoSiembra(email, map) async {
+    //Utilizamos el email del usuario que se inició sesión
+    String? emailUsuario = email;
+    //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
+    debugPrint(emailUsuario);
+    //Realizamos una consulta en la base de datos sobre el usuario con ese email
+    var query = usuarios.where('email', isEqualTo: emailUsuario);
+    //Extraemos la consulta
+    QuerySnapshot user = await query.get();
+    //Obtenemos el id del usuario en la base de datos para realizar
+    var userID = user.docs[0].id;
+    //Mapeamos la información del muestreo de siembra
+    Map muestreo = map;
+    //Obtenemos la lista de muestreos de siembra del usuario
+    List<dynamic> muestreosSiembraUsuario = user.docs[0]['muestreo_siembra'];
+    //Añadimos un muestreo de siembra a la lista de muestreos del usuario
+    muestreosSiembraUsuario.add(muestreo);
+    //Actualizamos la información del usuario con el nuevo muestreo incluido
+    usuarios.doc(userID).update({'muestreo_siembra': muestreosSiembraUsuario});
   }
 }

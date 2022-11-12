@@ -48,11 +48,13 @@ class AuthClass {
           QuerySnapshot user = await query.get();
           //Si el usuario no existía previamente
           List<String> lotes = [];
+          List<Map> muestreoSiembra = [];
           if (user.docs.isEmpty) {
             //Añadimos el usuario a la base de datos
             await usuarios.add({
               'propietario': auth.currentUser!.displayName,
               'lotes': lotes,
+              'muestreo_siembra': muestreoSiembra,
               'email': auth.currentUser!.email,
               'spreadsheet': ''
             });

@@ -2,6 +2,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:peces_app/domain/constants/firebase_constants.dart';
 import 'package:peces_app/pages/login/InicioSesionPage.dart';
 import 'package:peces_app/pages/general/ResumenMuestreoPage.dart';
@@ -25,16 +26,20 @@ class _GeneralPageState extends State<GeneralPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         //Color de fondo de la page en general
-        backgroundColor: const Color(0xFF0369AF),
+        backgroundColor: Color.fromARGB(255, 101, 170, 254),
         //Barra de arriba
         appBar: AppBar(
           automaticallyImplyLeading: false,
           centerTitle: false,
           //Título de la barra
-          title: Obx(() => Text('¡Bienvenido ${userController.userEmail}!',
-              style: estiloTexto(20))),
+          title: const Center(
+              child: Icon(
+            MdiIcons.shipWheel,
+            size: 45,
+          )),
+
           //Color de fondo de la barra
-          backgroundColor: const Color(0xFF0077BB),
+          backgroundColor: Color.fromARGB(255, 101, 170, 254),
         ),
         //Barra de abajo
         bottomNavigationBar: BottomNavigationBar(
@@ -176,12 +181,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     //Borramos el campo
                     _nombreAddLote.clear();
                   },
-                  child: Container(
-                    child: const Icon(
-                      Icons.add,
-                      size: 50,
-                      color: Colors.white,
-                    ),
+                  child: const Icon(
+                    Icons.add,
+                    size: 50,
+                    color: Colors.white,
                   ),
                 ),
                 label: 'Añadir Lote')
@@ -242,8 +245,10 @@ class _GeneralPageState extends State<GeneralPage> {
         //Obtenemos de forma global los valores del nombre del lote y su posición
         userController.getUserLote(title, index);
         //Aquí enviamos también el index para saber a qué lote accede la persona
-        Navigator.push(context,
-            MaterialPageRoute(builder: (context) => ResumenMuestreoPage()));
+        Navigator.push(
+            context,
+            MaterialPageRoute(
+                builder: (context) => const ResumenMuestreoPage()));
       },
       child: Container(
         //El ancho del widget será el del contexto
@@ -266,7 +271,9 @@ class _GeneralPageState extends State<GeneralPage> {
                           //Espacio entre el borde del container y el ícono
                           const SizedBox(width: 15),
                           const SizedBox(
-                              height: 33, width: 36, child: Icon(Icons.check)),
+                              height: 33,
+                              width: 36,
+                              child: Icon(MdiIcons.fish)),
                           const SizedBox(width: 15),
                           //Texto de la card
                           Text(title,

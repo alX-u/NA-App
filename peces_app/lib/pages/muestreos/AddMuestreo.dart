@@ -258,7 +258,7 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ),
         style: const TextStyle(
-          color: Colors.black,
+          color: Colors.white,
           fontSize: 16,
         ),
       ),
