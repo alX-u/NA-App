@@ -218,10 +218,12 @@ class _RegistroPageState extends State<RegistroPage> {
             //Añadimos el usuario a la base de datos
             List<String> lotes = [];
             List<Map> muestreoSiembra = [];
+            List<Map> muestreoCosecha = [];
             await usuarios.add({
               'propietario': _nombreController.text.trim(),
               'lotes': lotes,
               'muestreo_siembra': muestreoSiembra,
+              'muestreo_cosecha': muestreoCosecha,
               'email': _emailController.text.trim(),
               'spreadsheet': ''
             });

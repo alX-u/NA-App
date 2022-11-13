@@ -49,12 +49,14 @@ class AuthClass {
           //Si el usuario no existía previamente
           List<String> lotes = [];
           List<Map> muestreoSiembra = [];
+          List<Map> muestreoCosecha = [];
           if (user.docs.isEmpty) {
             //Añadimos el usuario a la base de datos
             await usuarios.add({
               'propietario': auth.currentUser!.displayName,
               'lotes': lotes,
               'muestreo_siembra': muestreoSiembra,
+              'muestreo_cosecha': muestreoCosecha,
               'email': auth.currentUser!.email,
               'spreadsheet': ''
             });

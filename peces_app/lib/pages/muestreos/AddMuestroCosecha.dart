@@ -314,16 +314,24 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
         //Mapeamos la información extraída del formulario
         Map map = {
           'lote': userController.userLote,
-          'fecha': fecha,
+          'siembra': dropdownvalue,
+          'peces_cosechados': pecesCosechadosController.text.trim(),
+          'biomasa_final': biomasaFinalController.text.trim(),
+          'produccion_final': produccionFinalController.text.trim(),
+          'rendimiento_final': rendimientoController.text.trim()
         };
         //Nos aseguramos de que la información no esté vacía
-        if (_fechaController != null) {
+        if (dropdownvalue != 'Escoja una siembra' &&
+            pecesCosechadosController.text != '' &&
+            biomasaFinalController.text != '' &&
+            biomasaFinalController.text != '' &&
+            rendimientoController.text != '') {
           try {
             //Llamamos a la función que añadirá la información a la spreadsheet
             // await sheetsAPI.insert([info]);
 
             //Enviamos la información a la base de datos
-            addMuestreoSiembra(userController.userEmail, map);
+            addMuestreoCosecha(userController.userEmail, map);
             //Se mostrará después de realizar el registro
             showDialog(
                 context: context,
@@ -378,7 +386,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   }
 
   //Función que añadirá el muestreo de siembra a la base de datos
-  void addMuestreoSiembra(email, map) async {
+  void addMuestreoCosecha(email, map) async {
     //Utilizamos el email del usuario que se inició sesión
     String? emailUsuario = email;
     //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
@@ -392,11 +400,11 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
     //Mapeamos la información del muestreo de siembra
     Map muestreo = map;
     //Obtenemos la lista de muestreos de siembra del usuario
-    List<dynamic> muestreosSiembraUsuario = user.docs[0]['muestreo_siembra'];
+    List<dynamic> muestreoCosechaUsuario = user.docs[0]['muestreo_cosecha'];
     //Añadimos un muestreo de siembra a la lista de muestreos del usuario
-    muestreosSiembraUsuario.add(muestreo);
+    muestreoCosechaUsuario.add(muestreo);
     //Actualizamos la información del usuario con el nuevo muestreo incluido
-    usuarios.doc(userID).update({'muestreo_siembra': muestreosSiembraUsuario});
+    usuarios.doc(userID).update({'muestreo_cosecha': muestreoCosechaUsuario});
   }
 
   //Función que calculará el valor de la produccion final
