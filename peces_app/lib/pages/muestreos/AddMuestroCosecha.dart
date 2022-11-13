@@ -24,13 +24,15 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   final TextEditingController biomasaFinalController = TextEditingController();
   final TextEditingController produccionFinalController =
       TextEditingController();
-  final TextEditingController rendimientoController = TextEditingController();
+  TextEditingController rendimientoController = TextEditingController();
   DateTime? _fechaController;
   String? fecha;
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
   var usuarios = userFirebase;
   // Initial Selected Value
   String dropdownvalue = 'Escoja una Siembra';
+
+  String prueba = '50';
   // List of items in our dropdown menu
   var items = [
     'Item 1',
@@ -104,18 +106,19 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                             color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 15),
                     //Campo que indica la producción final (esto tiene que calcularse)
-                    formField(
-                        'Producción Final',
-                        produccionFinalController,
+                    campoCalculado(
+                        'Producción Final (Kg)',
                         const Icon(MdiIcons.chartLine,
-                            color: Color.fromARGB(255, 101, 170, 254))),
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getProduccionFinal(prueba, '70')),
                     const SizedBox(height: 15),
                     //Campo que indica el rendimiento (esto tiene que calcularse)
-                    formField(
-                        'Rendimiento',
-                        rendimientoController,
+                    campoCalculado(
+                        'Rendimiento Final (Kg/m^2)',
                         const Icon(MdiIcons.chartBox,
-                            color: Color.fromARGB(255, 101, 170, 254))),
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getRendimientoFinal(
+                            produccionFinalController.text, '500')),
                     const SizedBox(height: 15),
                     botonEnviar()
                   ],
@@ -145,7 +148,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   //Widget de los form fields donde el usuario colocará su información
   Widget formField(
       String textname, TextEditingController controller, Icon icono) {
-    return Container(
+    return SizedBox(
       height: 55,
       width: MediaQuery.of(context).size.width,
       /*decoration: BoxDecoration(
@@ -258,6 +261,10 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
         }).toList(),
         onChanged: (_value) => {
               setState(() {
+                if (_value == 'Item 1') {
+                  prueba = '40';
+                  debugPrint(produccionFinalController.text);
+                }
                 dropdownvalue = _value.toString();
               })
             },
@@ -357,6 +364,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
     );
   }
 
+  //Función que añadirá el muestreo de siembra a la base de datos
   void addMuestreoSiembra(email, map) async {
     //Utilizamos el email del usuario que se inició sesión
     String? emailUsuario = email;
@@ -376,5 +384,61 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
     muestreosSiembraUsuario.add(muestreo);
     //Actualizamos la información del usuario con el nuevo muestreo incluido
     usuarios.doc(userID).update({'muestreo_siembra': muestreosSiembraUsuario});
+  }
+
+  //Función que calculará el valor de la produccion final
+  TextEditingController getProduccionFinal(
+      String biomasaInicial, String biomasaFinal) {
+    if (biomasaInicial != '' && biomasaFinal != '') {
+      produccionFinalController.text =
+          (double.parse(biomasaFinal) - double.parse(biomasaInicial))
+              .toString();
+      return produccionFinalController;
+    } else {
+      produccionFinalController.text = '';
+      return produccionFinalController;
+    }
+  }
+
+  //Función que calculará el valor del rendimiento final
+  TextEditingController getRendimientoFinal(String produccion, String area) {
+    if (produccion != '' && area != '') {
+      rendimientoController.text =
+          (double.parse(produccion) / double.parse(area)).toString();
+      return rendimientoController;
+    } else {
+      rendimientoController.text = '';
+      return rendimientoController;
+    }
+  }
+
+  //Widget para los campos que serán calculados
+  Widget campoCalculado(
+      String titulo, Icon icono, TextEditingController controller) {
+    return TextField(
+        style: const TextStyle(color: Colors.white),
+        readOnly: true,
+        controller: controller,
+        decoration: InputDecoration(
+            prefixIcon: icono,
+            labelText: titulo,
+            labelStyle: const TextStyle(
+                fontSize: 15,
+                color: Colors.white,
+                shadows: <Shadow>[
+                  Shadow(
+                      offset: Offset(2.0, 2.0),
+                      blurRadius: 3.0,
+                      color: Color.fromARGB(255, 0, 0, 0))
+                ]),
+
+            // border: InputBorder.none,
+            focusedBorder: const OutlineInputBorder(
+                borderSide: BorderSide(
+                    color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+            enabledBorder: const OutlineInputBorder(
+                borderSide: BorderSide(color: Colors.white, width: 1.3))
+            //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
+            ));
   }
 }
