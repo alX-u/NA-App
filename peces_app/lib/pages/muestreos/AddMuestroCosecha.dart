@@ -33,13 +33,15 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   String dropdownvalue = 'Escoja una Siembra';
 
   // List of items in our dropdown menu
-  var items = [
-    'Item 1',
-    'Item 2',
-    'Item 3',
-    'Item 4',
-    'Item 5',
-  ];
+  List<String> items = [];
+
+  @override
+  void initState() {
+    // TODO: implement initState
+    super.initState();
+    obtenerSiembras();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -436,5 +438,12 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                 borderSide: BorderSide(color: Colors.white, width: 1.3))
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ));
+  }
+
+  //Función para obtener las fechas de la lista de siembras
+  void obtenerSiembras() {
+    for (var i = 0; i < userController.listaSiembras.length; i++) {
+      items.add(userController.listaSiembras[i]['fecha']);
+    }
   }
 }

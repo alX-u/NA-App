@@ -26,7 +26,7 @@ class _GeneralPageState extends State<GeneralPage> {
   Widget build(BuildContext context) {
     return Scaffold(
         //Color de fondo de la page en general
-        backgroundColor: Color.fromARGB(255, 77, 82, 92),
+        backgroundColor: const Color.fromARGB(255, 77, 82, 92),
         //Barra de arriba
         appBar: AppBar(
           automaticallyImplyLeading: false,
@@ -39,13 +39,13 @@ class _GeneralPageState extends State<GeneralPage> {
           )),
 
           //Color de fondo de la barra
-          backgroundColor: Color.fromARGB(255, 55, 57, 65),
+          backgroundColor: const Color.fromARGB(255, 55, 57, 65),
         ),
         //Barra de abajo
         bottomNavigationBar: BottomNavigationBar(
           unselectedItemColor: Colors.white,
           unselectedFontSize: 14,
-          backgroundColor: Color.fromARGB(255, 58, 59, 61),
+          backgroundColor: const Color.fromARGB(255, 58, 59, 61),
           fixedColor: Colors.white,
           items: [
             //Botón de cerrar sesión
@@ -82,12 +82,10 @@ class _GeneralPageState extends State<GeneralPage> {
                             ],
                           ));
                 },
-                child: Container(
-                  child: const Icon(
-                    Icons.logout_rounded,
-                    size: 30,
-                    color: Colors.white,
-                  ),
+                child: const Icon(
+                  Icons.logout_rounded,
+                  size: 30,
+                  color: Colors.white,
                 ),
               ),
               label: 'Cerrar Sesión',
@@ -132,12 +130,10 @@ class _GeneralPageState extends State<GeneralPage> {
                     //Borramos un lote
                     _nombreDelLote.clear();
                   },
-                  child: Container(
-                    child: const Icon(
-                      Icons.delete,
-                      size: 30,
-                      color: Colors.white,
-                    ),
+                  child: const Icon(
+                    Icons.delete,
+                    size: 30,
+                    color: Colors.white,
                   ),
                 ),
                 label: 'Borrar Lote'),
@@ -250,14 +246,14 @@ class _GeneralPageState extends State<GeneralPage> {
             MaterialPageRoute(
                 builder: (context) => const ResumenMuestreoPage()));
       },
-      child: Container(
+      child: SizedBox(
         //El ancho del widget será el del contexto
         width: MediaQuery.of(context).size.width,
         child: Row(
           children: [
             //Permite que el container ocupe todo el espacio disponible
             Expanded(
-              child: Container(
+              child: SizedBox(
                   height: 75,
                   //Card que hará de botón para acceder a cada lote
                   child: Card(

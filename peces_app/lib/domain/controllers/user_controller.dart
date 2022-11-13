@@ -1,17 +1,21 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:get/get.dart';
+import 'package:peces_app/domain/constants/firebase_constants.dart';
 import 'package:peces_app/service/Auth_Service.dart';
 
 class UserController extends GetxController {
   FirebaseAuth auth = FirebaseAuth.instance;
+  var usuarios = userFirebase;
   final RxString _userEmail = ''.obs;
   final RxString _userLote = 'Ejemplo'.obs;
   final RxInt _userLotePos = 0.obs;
+  final RxList _listaSiembras = [].obs;
 
   String get userEmail => _userEmail.value;
   String get userLote => _userLote.value;
   int get userLotePos => _userLotePos.value;
+  List get listaSiembras => _listaSiembras;
 
   void setUserEmail() {
     AuthClass authClass = AuthClass();
@@ -47,5 +51,14 @@ class UserController extends GetxController {
   void getUserLote(String nombre, int pos) {
     _userLote.value = nombre;
     _userLotePos.value = pos;
+  }
+
+  //Obtener la lista de siembras de un determinado lote en la base de datos del usuario
+  void setListaSiembras(List list) {
+    _listaSiembras.value = list;
+  }
+
+  void addSiembra(Map map) {
+    _listaSiembras.add(map);
   }
 }

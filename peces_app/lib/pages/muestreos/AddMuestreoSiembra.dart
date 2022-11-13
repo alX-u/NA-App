@@ -268,6 +268,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
 
             //Enviamos la información a la base de datos
             addMuestreoSiembra(userController.userEmail, map);
+            //Actualizamos la lista de siembras en la aplicación
+            userController.addSiembra(map);
             //Se mostrará después de realizar el registro
             showDialog(
                 context: context,

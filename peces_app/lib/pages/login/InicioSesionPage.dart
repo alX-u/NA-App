@@ -1,8 +1,10 @@
 // ignore_for_file: file_names
 import 'dart:developer';
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
+import 'package:peces_app/domain/constants/firebase_constants.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/login/RegistroPage.dart';
 import 'package:firebase_auth/firebase_auth.dart';
@@ -23,6 +25,7 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   final TextEditingController _passwordController = TextEditingController();
   bool circulo = false;
   UserController userController = Get.find();
+  var usuarios = userFirebase;
 
   @override
   Widget build(BuildContext context) {
@@ -162,13 +165,28 @@ class _InicioSesionPage extends State<InicioSesionPage> {
   Widget googleBoton(String emailUsuario) {
     return InkWell(
       onTap: () async {
+        //Iniciamos sesión con google
         await userController.googleSignIn(context);
+        //Utilizamos el email del usuario que se inició sesión
+        String? emailUsuario = userController.userEmail;
+        //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
+        debugPrint(emailUsuario);
+        //Realizamos una consulta en la base de datos sobre el usuario con ese email
+        var query = usuarios.where('email', isEqualTo: emailUsuario);
+        //Extraemos la consulta
+        QuerySnapshot user = await query.get();
+        //Obtenemos el id del usuario en la base de datos para realizar
+        var userID = user.docs[0].id;
+        //Obtenemos la lista de siembras del usuario
+        List<dynamic> siembras = user.docs[0]['muestreo_siembra'];
+        //Enviamos esta lista para que se conozca de forma global
+        userController.setListaSiembras(siembras);
         if (emailUsuario != '') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
         }
       },
-      child: Container(
+      child: SizedBox(
         width: MediaQuery.of(context).size.width - 70,
         height: 55,
         //Carta que representa el botón de ingreso con Google
@@ -231,6 +249,20 @@ class _InicioSesionPage extends State<InicioSesionPage> {
               _emailController.text.trim(), _passwordController.text.trim());
           //Seteamos el email de usuario de forma global
           userController.setUserEmail();
+          //Utilizamos el email del usuario que se inició sesión
+          String? emailUsuario = userController.userEmail;
+          //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
+          debugPrint(emailUsuario);
+          //Realizamos una consulta en la base de datos sobre el usuario con ese email
+          var query = usuarios.where('email', isEqualTo: emailUsuario);
+          //Extraemos la consulta
+          QuerySnapshot user = await query.get();
+          //Obtenemos el id del usuario en la base de datos para realizar
+          var userID = user.docs[0].id;
+          //Obtenemos la lista de siembras del usuario
+          List<dynamic> siembras = user.docs[0]['muestreo_siembra'];
+          //Enviamos esta lista para que se conozca de forma global
+          userController.setListaSiembras(siembras);
           //Vamos hacia la homepage
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
