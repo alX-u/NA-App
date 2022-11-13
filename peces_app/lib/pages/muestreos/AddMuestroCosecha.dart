@@ -32,7 +32,6 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   // Initial Selected Value
   String dropdownvalue = 'Escoja una Siembra';
 
-  String prueba = '50';
   // List of items in our dropdown menu
   var items = [
     'Item 1',
@@ -102,7 +101,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                     formField(
                         'Biomasa Final',
                         biomasaFinalController,
-                        const Icon(MdiIcons.weightGram,
+                        const Icon(MdiIcons.weightKilogram,
                             color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 15),
                     //Campo que indica la producción final (esto tiene que calcularse)
@@ -110,7 +109,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                         'Producción Final (Kg)',
                         const Icon(MdiIcons.chartLine,
                             color: Color.fromARGB(255, 101, 170, 254)),
-                        getProduccionFinal(prueba, '70')),
+                        getProduccionFinal('50', '70')),
                     const SizedBox(height: 15),
                     //Campo que indica el rendimiento (esto tiene que calcularse)
                     campoCalculado(
@@ -261,10 +260,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
         }).toList(),
         onChanged: (_value) => {
               setState(() {
-                if (_value == 'Item 1') {
-                  prueba = '40';
-                  debugPrint(produccionFinalController.text);
-                }
+                //Aquí va el código para cambiar los valores de la biomasa inicial y el tamaño del tanque
                 dropdownvalue = _value.toString();
               })
             },

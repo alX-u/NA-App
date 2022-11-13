@@ -86,14 +86,14 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
                     const SizedBox(height: 20),
                     //Input del peso de la siembra por unidad
                     formField(
-                        'Biomasa Inicial (en Gr)',
+                        'Biomasa Inicial (Kg)',
                         _pesoSiembraPorUnidadController,
-                        const Icon(MdiIcons.weightGram,
+                        const Icon(MdiIcons.weightKilogram,
                             color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 20),
                     //Input que indica el área del lote
                     formField(
-                        'Área del lote (m2)',
+                        'Área del lote (m^2)',
                         _areaController,
                         const Icon(MdiIcons.square,
                             color: Color.fromARGB(255, 101, 170, 254))),
@@ -341,6 +341,4 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
     //Actualizamos la información del usuario con el nuevo muestreo incluido
     usuarios.doc(userID).update({'muestreo_siembra': muestreosSiembraUsuario});
   }
-
-  
 }
