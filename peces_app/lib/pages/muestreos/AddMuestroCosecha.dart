@@ -443,7 +443,9 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   //Función para obtener las fechas de la lista de siembras
   void obtenerSiembras() {
     for (var i = 0; i < userController.listaSiembras.length; i++) {
-      items.add(userController.listaSiembras[i]['fecha']);
+      if (userController.listaSiembras[i]['lote'] == userController.userLote) {
+        items.add(userController.listaSiembras[i]['fecha']);
+      }
     }
   }
 }
