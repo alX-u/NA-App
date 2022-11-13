@@ -110,7 +110,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                     const SizedBox(height: 15),
                     //Campo que indica la producción final (esto tiene que calcularse)
                     campoCalculado(
-                        'Producción Final (Kg)',
+                        'Producción Final',
+                        'Kg',
                         const Icon(MdiIcons.chartLine,
                             color: Color.fromARGB(255, 101, 170, 254)),
                         getProduccionFinal(biomasaInicial,
@@ -118,7 +119,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                     const SizedBox(height: 15),
                     //Campo que indica el rendimiento (esto tiene que calcularse)
                     campoCalculado(
-                        'Rendimiento Final (Kg/m^2)',
+                        'Rendimiento Final',
+                        'Kg/m^2',
                         const Icon(MdiIcons.chartBox,
                             color: Color.fromARGB(255, 101, 170, 254)),
                         getRendimientoFinal(
@@ -174,9 +176,11 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
 
             // border: InputBorder.none,
             focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 borderSide: BorderSide(
                     color: Color.fromARGB(255, 101, 170, 254), width: 3)),
             enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 borderSide: BorderSide(color: Colors.white, width: 1.3))
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ),
@@ -434,33 +438,38 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   }
 
   //Widget para los campos que serán calculados
-  Widget campoCalculado(
-      String titulo, Icon icono, TextEditingController controller) {
+  Widget campoCalculado(String titulo, String unidad, Icon icono,
+      TextEditingController controller) {
     return TextField(
         style: const TextStyle(color: Colors.white),
         readOnly: true,
         controller: controller,
         decoration: InputDecoration(
-            prefixIcon: icono,
-            labelText: titulo,
-            labelStyle: const TextStyle(
-                fontSize: 15,
-                color: Colors.white,
-                shadows: <Shadow>[
-                  Shadow(
-                      offset: Offset(2.0, 2.0),
-                      blurRadius: 3.0,
-                      color: Color.fromARGB(255, 0, 0, 0))
-                ]),
+          prefixIcon: icono,
+          suffixText: unidad,
+          suffixStyle: const TextStyle(color: Colors.white),
+          labelText: titulo,
+          labelStyle: const TextStyle(
+              fontSize: 15,
+              color: Colors.white,
+              shadows: <Shadow>[
+                Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0))
+              ]),
 
-            // border: InputBorder.none,
-            focusedBorder: const OutlineInputBorder(
-                borderSide: BorderSide(
-                    color: Color.fromARGB(255, 101, 170, 254), width: 3)),
-            enabledBorder: const OutlineInputBorder(
-                borderSide: BorderSide(color: Colors.white, width: 1.3))
-            //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
-            ));
+          // border: InputBorder.none,
+          focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(
+                  color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+          enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(color: Colors.white, width: 1.3)),
+
+          //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
+        ));
   }
 
   //Función para obtener las fechas de la lista de siembras
