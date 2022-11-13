@@ -27,6 +27,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
   TextEditingController rendimientoController = TextEditingController();
   DateTime? _fechaController;
   String? fecha;
+  String biomasaInicial = '';
+  String areaTanque = '';
   //Obtenemos la referencia a la collection 'usuario' que se encuentra en nuestra base de datos
   var usuarios = userFirebase;
   // Initial Selected Value
@@ -111,7 +113,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                         'Producción Final (Kg)',
                         const Icon(MdiIcons.chartLine,
                             color: Color.fromARGB(255, 101, 170, 254)),
-                        getProduccionFinal('50', '70')),
+                        getProduccionFinal(biomasaInicial,
+                            biomasaFinalController.text.trim())),
                     const SizedBox(height: 15),
                     //Campo que indica el rendimiento (esto tiene que calcularse)
                     campoCalculado(
@@ -119,7 +122,7 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                         const Icon(MdiIcons.chartBox,
                             color: Color.fromARGB(255, 101, 170, 254)),
                         getRendimientoFinal(
-                            produccionFinalController.text, '500')),
+                            produccionFinalController.text, areaTanque)),
                     const SizedBox(height: 15),
                     botonEnviar()
                   ],
@@ -263,6 +266,18 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
         onChanged: (_value) => {
               setState(() {
                 //Aquí va el código para cambiar los valores de la biomasa inicial y el tamaño del tanque
+                for (var i = 0; i < userController.listaSiembras.length; i++) {
+                  if (_value == userController.listaSiembras[i]['fecha'] &&
+                      userController.listaSiembras[i]['lote'] ==
+                          userController.userLote) {
+                    biomasaInicial =
+                        userController.listaSiembras[i]['biomasa_inicial'];
+                    areaTanque = userController.listaSiembras[i]['area'];
+                    debugPrint(
+                        'Biomasa Inicial de la siembra: ' + biomasaInicial);
+                    debugPrint('Área de la siembra: ' + areaTanque);
+                  }
+                }
                 dropdownvalue = _value.toString();
               })
             },

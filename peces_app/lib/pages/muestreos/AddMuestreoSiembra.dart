@@ -258,7 +258,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
           'lote': userController.userLote,
           'fecha': fecha,
           'peces_sembrados': _pecesSembradosController.text.trim(),
-          'biomasa_inicial': _pesoSiembraPorUnidadController.text.trim()
+          'biomasa_inicial': _pesoSiembraPorUnidadController.text.trim(),
+          'area': _areaController.text.trim()
         };
         //Nos aseguramos de que la información no esté vacía
         if (_fechaController != null) {
