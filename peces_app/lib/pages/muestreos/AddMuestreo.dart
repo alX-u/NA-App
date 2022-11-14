@@ -1,10 +1,14 @@
 // ignore_for_file: file_names
 
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
+import 'package:peces_app/domain/constants/firebase_constants.dart';
+import 'package:peces_app/domain/controllers/user_controller.dart';
 import 'package:peces_app/model/UserFields.dart';
 import 'package:peces_app/pages/general/GeneralPage.dart';
 import 'package:peces_app/pages/general/ResumenMuestreoPage.dart';
-import 'package:peces_app/service/Auth_Service.dart';
 import 'package:peces_app/service/sheets.dart';
 
 class AddMuestreoPage extends StatefulWidget {
@@ -18,40 +22,47 @@ class AddMuestreoPage extends StatefulWidget {
 }
 
 class _AddMuestreoPageState extends State<AddMuestreoPage> {
-  final TextEditingController _pecesSembradosController =
+  final TextEditingController _cantidadPecesController =
       TextEditingController();
-  final TextEditingController _pesoSiembraPorUnidadController =
+  final TextEditingController _biomasaParcialController =
       TextEditingController();
   DateTime? _fechaController;
   String? fecha;
-  final TextEditingController _noMuestreoController = TextEditingController();
-  final TextEditingController _pecesCapturaController = TextEditingController();
-  final TextEditingController _pesoCapturaController = TextEditingController();
-  String? _pesoPromedioGrController;
-  final TextEditingController _semanaController = TextEditingController();
-  String? _biomasaParcialController;
+  final TextEditingController _cantidadDiasController = TextEditingController();
   final TextEditingController _observacionesController =
       TextEditingController();
-  String? _gananciaSemanalController;
-  final TextEditingController _pesoMetaController = TextEditingController();
-  String? _porcentajeMetaController;
-  final TextEditingController _porcentajeAlimentoController =
+  final TextEditingController _produccionParcialController =
       TextEditingController();
-  String? _qAlimentoController;
-  AuthClass authClass = AuthClass();
+  final TextEditingController _tasaDeProduccionController =
+      TextEditingController();
+  final TextEditingController _rendimientoController = TextEditingController();
+  final TextEditingController _pesoMetaController = TextEditingController();
+  final TextEditingController _porcentajeMetaController =
+      TextEditingController();
+  final TextEditingController _indiceDeSupervivenciaController =
+      TextEditingController();
   final TextEditingController _mortalidadController = TextEditingController();
+  UserController userController = Get.find();
+  String dropdownvalue = 'Escoja una Siembra';
+  String biomasaInicial = '';
+  String areaTanque = '';
+  String cantidadPecesInicial = '';
+
+  var usuarios = userFirebase;
+
+  // List of items in our dropdown menu
+  List<String> items = [];
 
   @override
   void initState() {
     super.initState();
+    obtenerSiembras();
   }
 
   @override
   void dispose() {
     // Clean up the controller when the widget is removed from the
     // widget tree.
-    _pecesCapturaController.dispose();
-    _pesoCapturaController.dispose();
     super.dispose();
   }
 
@@ -97,110 +108,95 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text('Registra tu muestreo: ', style: estiloTexto(28)),
-                    const SizedBox(height: 10),
-                    Text(
-                        'Recuerde dar enter en su teclado después de llenar los campos para realizar los cálculos correctamente.',
-                        style: estiloTexto(12)),
-                    const SizedBox(height: 30),
-                    //Input de los peces sembrados
-                    //inputLabel('Peces Sembrados:'),
+                    //Campo que indica la siembra a la que pertenece el muestreo
+                    listaDeSiembras(),
                     const SizedBox(height: 15),
-                    formField('Peces Sembrados:', _pecesSembradosController),
-                    const SizedBox(height: 20),
-                    //Input del peso de la siembra por unidad
-                    //inputLabel('Peso de la siembra por unidad (en Gr):'),
+                    //Campo que indica la cantidad de peces presentes en el estanque
+                    formField(
+                        'Cantidad de Peces',
+                        _cantidadPecesController,
+                        const Icon(MdiIcons.fish,
+                            color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 15),
-                    formField('Peso de la siembra por unidad (en Gr):',
-                        _pesoSiembraPorUnidadController),
-                    const SizedBox(height: 20),
-                    //Input de la fecha
-                    inputLabel('Fecha:'),
+                    //Campo que indica la biomasa meta
+                    formField(
+                        'Biomasa Meta',
+                        _pesoMetaController,
+                        const Icon(MdiIcons.weight,
+                            color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 15),
-                    //DatePicker
+                    //Campo que indica la biomasa del estanque en este momento
+                    formField(
+                        'Biomasa Parcial',
+                        _biomasaParcialController,
+                        const Icon(MdiIcons.weightKilogram,
+                            color: Color.fromARGB(255, 101, 170, 254))),
+                    const SizedBox(height: 15),
+                    //Campo que indica la fecha en la que se realiza el muestreo
                     botonFecha(),
-                    //Input No. del Muestreo
-                    const SizedBox(height: 20),
-                    //inputLabel('No. del Muestreo:'),
                     const SizedBox(height: 15),
-                    formField('No. del Muestreo:', _noMuestreoController),
-                    //Input Peces Captura
-                    const SizedBox(height: 20),
-                    // inputLabel('Peces Captura:'),
+                    //Campo que indica los días que lleva la siembra hasta la fecha
+                    formField(
+                        'Días',
+                        _cantidadDiasController,
+                        const Icon(MdiIcons.counter,
+                            color: Color.fromARGB(255, 101, 170, 254))),
                     const SizedBox(height: 15),
-                    formField('Peces Captura:', _pecesCapturaController),
-                    //Input Peso Captura
-                    const SizedBox(height: 20),
-                    //inputLabel('Peso Captura:'),
+                    //Campo que indica la producción
+                    campoCalculado(
+                        'Producción',
+                        'Kg',
+                        const Icon(MdiIcons.chartLine,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getProduccionParcial(biomasaInicial,
+                            _biomasaParcialController.text.trim())),
                     const SizedBox(height: 15),
-                    formField('Peso Captura:', _pesoCapturaController),
-                    //Input Peso Promedio (en gramos)
-                    const SizedBox(height: 20),
-                    inputLabel('Peso Promedio (en gramos):'),
+                    //Campo que indica la tasa de producción
+                    campoCalculado(
+                        'Tasa de Producción',
+                        'Kg/día',
+                        const Icon(MdiIcons.chartBar,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getTasaProduccion(
+                            _produccionParcialController.text.trim(),
+                            _cantidadDiasController.text.trim())),
                     const SizedBox(height: 15),
-                    Text(
-                        getPesoPromedioGR(_pecesCapturaController.text,
-                            _pesoCapturaController.text)!,
-                        style: estiloTexto(18)),
-                    //Input de respectiva Semana
-                    const SizedBox(height: 20),
-                    //inputLabel('Semana:'),
+                    //Campo que indica el rendimiento actual
+                    campoCalculado(
+                        'Rendimiento',
+                        'Kg/m^2',
+                        const Icon(MdiIcons.chartBox,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getRendimiento(_produccionParcialController.text.trim(),
+                            areaTanque)),
                     const SizedBox(height: 15),
-                    formField('Semana:', _semanaController),
-                    //Input de la Biomasa Parcial en Kg
-                    const SizedBox(height: 20),
-                    inputLabel('Biomasa Parcial (en Kg):'),
+                    //Campo que indica el porcentaje de la biomasa meta
+                    campoCalculado(
+                        'Porcentaje Biomasa Meta',
+                        '%',
+                        const Icon(MdiIcons.percentOutline,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getPorcentajeMeta(_biomasaParcialController.text.trim(),
+                            _pesoMetaController.text.trim())),
                     const SizedBox(height: 15),
-                    Text(
-                        getBiomasaParcial(_pecesSembradosController.text,
-                            _pesoPromedioGrController!)!,
-                        style: estiloTexto(20)),
-                    //Input de Observaciones
-                    const SizedBox(height: 20),
-                    //inputLabel('Observaciones:'),
+                    //Campo que indica el porcentaje de supervivencia
+                    campoCalculado(
+                        'Índice de Supervivencia',
+                        '%',
+                        const Icon(MdiIcons.percent,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getIndiceDeSupervivencia(cantidadPecesInicial,
+                            _cantidadPecesController.text.trim())),
                     const SizedBox(height: 15),
-                    formField('Observaciones:', _observacionesController),
-                    //Input de Ganancia Semanal
-                    const SizedBox(height: 20),
-                    inputLabel('Ganancia Semanal:'),
+                    //Campo que indica el porcentaje de mortalidad
+                    campoCalculado(
+                        'Índice de Mortalidad',
+                        '%',
+                        const Icon(MdiIcons.skull,
+                            color: Color.fromARGB(255, 101, 170, 254)),
+                        getIndiceMortalidad(
+                            _indiceDeSupervivenciaController.text.trim())),
                     const SizedBox(height: 15),
-                    Text(
-                        getGanancia(_pesoSiembraPorUnidadController.text,
-                            _pesoPromedioGrController!)!,
-                        style: estiloTexto(20)),
-                    //Input de peso meta
-                    const SizedBox(height: 20),
-                    //inputLabel('Peso Meta:'),
-                    const SizedBox(height: 15),
-                    formField('Peso Meta:', _pesoMetaController),
-                    //Input de % meta
-                    const SizedBox(height: 20),
-                    inputLabel('Meta %:'),
-                    const SizedBox(height: 15),
-                    Text(
-                        getPorcentajeMeta(_pesoPromedioGrController!,
-                            _pesoMetaController.text)!,
-                        style: estiloTexto(20)),
-                    //Input de % alimento
-                    const SizedBox(height: 20),
-                    //inputLabel('Alimento %:'),
-                    const SizedBox(height: 15),
-                    formField('Alimento %:', _porcentajeAlimentoController),
-                    //Input de Q Alimento
-                    const SizedBox(height: 20),
-                    inputLabel('Q Alimento:'),
-                    const SizedBox(height: 15),
-                    Text(
-                        getQAlimento(_biomasaParcialController!,
-                            _porcentajeAlimentoController.text)!,
-                        style: estiloTexto(20)),
-                    //Input de Mortalidad
-                    const SizedBox(height: 20),
-                    //inputLabel('Mortalidad:'),
-                    const SizedBox(height: 15),
-                    formField('Mortalidad:', _mortalidadController),
-                    const SizedBox(height: 35),
-                    //Botón de enviar la información
                     botonEnviar()
                   ],
                 ),
@@ -229,8 +225,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
   }
 
   //Widget de los form fields donde el usuario colocará su información
-  Widget formField(String textname, TextEditingController controller) {
-    return Container(
+  Widget formField(
+      String textname, TextEditingController controller, Icon icono) {
+    return SizedBox(
       height: 55,
       width: MediaQuery.of(context).size.width,
       /*decoration: BoxDecoration(
@@ -238,6 +235,7 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
       child: TextFormField(
         controller: controller,
         decoration: InputDecoration(
+            prefixIcon: icono,
             labelText: textname,
             labelStyle: const TextStyle(
                 fontSize: 15,
@@ -251,9 +249,11 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
 
             // border: InputBorder.none,
             focusedBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 borderSide: BorderSide(
                     color: Color.fromARGB(255, 101, 170, 254), width: 3)),
             enabledBorder: const OutlineInputBorder(
+                borderRadius: BorderRadius.all(Radius.circular(7.0)),
                 borderSide: BorderSide(color: Colors.white, width: 1.3))
             //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
             ),
@@ -324,39 +324,59 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
       onTap: () async {
         String nombreLote = widget.nLote;
         //Inicializamos la clase sheetsAPI, pasando el email del usuario, esto decide la spreadsheet y la worksheet
-        await sheetsAPI.init(authClass.auth.currentUser!.email!, nombreLote);
+        //await sheetsAPI.init(authClass.auth.currentUser!.email!, nombreLote);
         //Establecemos la información que vamos a pasar al spreadsheet en formato JSON
-        final info = {
-          UserFields.pecesSembrados: _pecesSembradosController.text.trim(),
-          UserFields.pesoSiembraPorUnidad:
-              _pesoSiembraPorUnidadController.text.trim(),
-          UserFields.fecha: fecha,
-          UserFields.noMuestreo: _noMuestreoController.text.trim(),
-          UserFields.pecesCaptura: _pecesCapturaController.text.trim(),
-          UserFields.pesoCaptura: _pesoCapturaController.text.trim(),
-          UserFields.pesoPromedioGR: _pesoPromedioGrController,
-          UserFields.semana: _semanaController.text.trim(),
-          UserFields.biomasa: _biomasaParcialController,
-          UserFields.observaciones: _observacionesController.text.trim(),
-          UserFields.gananciaSemanal: _gananciaSemanalController,
-          UserFields.pesoMeta: _pesoMetaController.text.trim(),
-          UserFields.porcentajeMeta: _porcentajeMetaController,
-          UserFields.porcentajeAlimento:
-              _porcentajeAlimentoController.text.trim(),
-          UserFields.qAlimento: _qAlimentoController,
-          UserFields.mortalidad: _mortalidadController.text.trim()
+        // final info = {
+        //   UserFields.fecha: fecha,
+        //   UserFields.noMuestreo: _noMuestreoController.text.trim(),
+        //   UserFields.semana: _semanaController.text.trim(),
+        //   UserFields.biomasa: _biomasaParcialController,
+        //   UserFields.observaciones: _observacionesController.text.trim(),
+        //   UserFields.gananciaSemanal: _gananciaSemanalController,
+        //   UserFields.pesoMeta: _pesoMetaController.text.trim(),
+        //   UserFields.porcentajeMeta: _porcentajeMetaController,
+        //   UserFields.porcentajeAlimento:
+        //       _porcentajeAlimentoController.text.trim(),
+        //   UserFields.qAlimento: _qAlimentoController,
+        //   UserFields.mortalidad: _mortalidadController.text.trim()
+        // };
+
+        //Mapeamos la información extraída del formulario
+        Map map = {
+          'lote': userController.userLote,
+          'siembra': dropdownvalue,
+          'cantidad_peces': _cantidadPecesController.text.trim(),
+          'biomasa_parcial': _biomasaParcialController.text.trim(),
+          'fecha': fecha,
+          'dias': _cantidadDiasController.text.trim(),
+          'produccion_parcial': _produccionParcialController.text.trim(),
+          'tasa_de_produccion': _tasaDeProduccionController.text.trim(),
+          'rendimiento_parcial': _rendimientoController.text.trim(),
+          'biomasa_meta': _pesoMetaController.text.trim(),
+          'porcentaje_biomasa_meta': _porcentajeMetaController.text.trim(),
+          'indice_supervivencia': _indiceDeSupervivenciaController.text.trim(),
+          'indice_mortalidad': _mortalidadController.text.trim()
         };
+
         //Nos aseguramos de que la información no esté vacía
         if (_fechaController != null &&
-            _pesoPromedioGrController != '' &&
-            _biomasaParcialController != '' &&
-            _qAlimentoController != '' &&
-            _porcentajeMetaController != '' &&
-            _gananciaSemanalController != '') {
+            _cantidadPecesController.text != '' &&
+            _biomasaParcialController.text != '' &&
+            _cantidadDiasController.text != '' &&
+            _produccionParcialController.text != '' &&
+            _tasaDeProduccionController.text != '' &&
+            _rendimientoController.text != '' &&
+            _pesoMetaController.text != '' &&
+            _porcentajeMetaController.text != '' &&
+            _indiceDeSupervivenciaController.text != '' &&
+            _mortalidadController.text != '') {
           try {
             //Llamamos a la función que añadirá la información a la spreadsheet
-            await sheetsAPI.insert([info]);
+            //await sheetsAPI.insert([info]);
             //Se mostrará después de realizar el registro
+
+            //Enviamos la información a la base de datos
+            addMuestreoControl(userController.userEmail, map);
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -374,14 +394,8 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                                           const GeneralPage()));
                               //Borramos el texto escrito en los textfield
                               _fechaController == null;
-                              _noMuestreoController.clear();
-                              _pecesCapturaController.clear();
-                              _pesoCapturaController.clear();
-                              _semanaController.clear();
                               _observacionesController.clear();
                               _pesoMetaController.clear();
-                              _porcentajeAlimentoController.clear();
-                              _mortalidadController.clear();
                             },
                             child: const Text("OK"))
                       ],
@@ -413,82 +427,17 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
     );
   }
 
-  //Calculamos el peso promedio en gr a partir de los peces capturados y el peso de la captura
-  String? getPesoPromedioGR(String pecesCaptura, String pesoCaptura) {
-    if (pecesCaptura != '' &&
-        pesoCaptura != '' &&
-        double.parse(pesoCaptura) != 0.0) {
-      _pesoPromedioGrController =
-          (double.parse(pesoCaptura) / double.parse(pecesCaptura)).toString();
-      return _pesoPromedioGrController;
-    } else {
-      _pesoPromedioGrController = '';
-      return _pesoPromedioGrController;
-    }
-  }
-
-  //Obtener el peso promedio
-  void getPromedioPeso() {
-    if (_pecesCapturaController.text != '' &&
-        _pesoCapturaController.text != '' &&
-        double.parse(_pesoCapturaController.text) != 0.0) {
-      _pesoPromedioGrController = (double.parse(_pesoCapturaController.text) /
-              double.parse(_pecesCapturaController.text))
-          .toString();
-    } else {
-      _pesoPromedioGrController = '';
-    }
-  }
-
-  //Calculamos la biomasa parcial con la cantidad de peces sembrados en la siembra determinada y el peso promedio del muestreo
-  String? getBiomasaParcial(String pecesSembrados, String pesoPromedio) {
-    if (pecesSembrados != '' && pesoPromedio != '') {
-      _biomasaParcialController =
-          ((double.parse(pecesSembrados) * double.parse(pesoPromedio)) / 1000)
-              .toString();
-      return _biomasaParcialController;
-    } else {
-      _biomasaParcialController = '';
-      return _biomasaParcialController;
-    }
-  }
-
-  //Calculamos la ganancia
-  String? getGanancia(String pesoSiembraPorUnidad, String pesoPromedio) {
-    if (pesoSiembraPorUnidad != '' && pesoPromedio != '') {
-      _gananciaSemanalController =
-          (double.parse(pesoPromedio) - double.parse(pesoSiembraPorUnidad))
-              .toString();
-      return _gananciaSemanalController;
-    } else {
-      _gananciaSemanalController = '';
-      return _gananciaSemanalController;
-    }
-  }
-
   //Calculamos el porcentaje de la meta con el peso promedio y el peso meta
-  String? getPorcentajeMeta(String pesoPromedio, String pesoMeta) {
-    if (pesoPromedio != '' && pesoMeta != '' && double.parse(pesoMeta) != 0) {
-      _porcentajeMetaController =
-          ((double.parse(pesoPromedio) / double.parse(pesoMeta)) * 100)
+  TextEditingController getPorcentajeMeta(
+      String biomasaParcial, String pesoMeta) {
+    if (biomasaParcial != '' && pesoMeta != '' && double.parse(pesoMeta) != 0) {
+      _porcentajeMetaController.text =
+          ((double.parse(biomasaParcial) / double.parse(pesoMeta)) * 100)
               .toString();
       return _porcentajeMetaController;
     } else {
-      _porcentajeMetaController = '';
+      _porcentajeMetaController.text = '';
       return _porcentajeMetaController;
-    }
-  }
-
-  //Calculamos el Q alimento a partir de la biomasa parcial y el porcentaje de alimento
-  String? getQAlimento(String biomasa, String porcentajeAlimento) {
-    if (biomasa != '' && porcentajeAlimento != '') {
-      _qAlimentoController =
-          (double.parse(biomasa) * double.parse(porcentajeAlimento) / 100)
-              .toString();
-      return _qAlimentoController;
-    } else {
-      _qAlimentoController = '';
-      return _qAlimentoController;
     }
   }
 
@@ -503,5 +452,179 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
               blurRadius: 3.0,
               color: Color.fromARGB(255, 0, 0, 0))
         ]);
+  }
+
+  Widget listaDeSiembras() {
+    return DropdownButtonFormField(
+        items: items.map((String item) {
+          return DropdownMenuItem(
+              child: Text(item, style: const TextStyle(color: Colors.white)),
+              value: item);
+        }).toList(),
+        onChanged: (_value) => {
+              setState(() {
+                //Aquí va el código para cambiar los valores de la biomasa inicial y el tamaño del tanque
+                for (var i = 0; i < userController.listaSiembras.length; i++) {
+                  if (_value == userController.listaSiembras[i]['fecha'] &&
+                      userController.listaSiembras[i]['lote'] ==
+                          userController.userLote) {
+                    biomasaInicial =
+                        userController.listaSiembras[i]['biomasa_inicial'];
+                    areaTanque = userController.listaSiembras[i]['area'];
+                    cantidadPecesInicial =
+                        userController.listaSiembras[i]['peces_sembrados'];
+                    debugPrint(
+                        'Biomasa Inicial de la siembra: ' + biomasaInicial);
+                    debugPrint('Área de la siembra: ' + areaTanque);
+                  }
+                }
+                dropdownvalue = _value.toString();
+              })
+            },
+        hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
+        icon: const Icon(
+          MdiIcons.fishbowl,
+          color: Color.fromARGB(255, 101, 170, 254),
+        ),
+        dropdownColor: const Color.fromARGB(255, 101, 170, 254),
+        decoration: const InputDecoration(
+            labelText: 'Siembra',
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            labelStyle: TextStyle(
+              color: Colors.white,
+            )));
+  }
+
+  //Función para obtener las fechas de la lista de siembras
+  void obtenerSiembras() {
+    for (var i = 0; i < userController.listaSiembras.length; i++) {
+      if (userController.listaSiembras[i]['lote'] == userController.userLote) {
+        items.add(userController.listaSiembras[i]['fecha']);
+      }
+    }
+  }
+
+  //Widget para los campos que serán calculados
+  Widget campoCalculado(String titulo, String unidad, Icon icono,
+      TextEditingController controller) {
+    return TextField(
+        style: const TextStyle(color: Colors.white),
+        readOnly: true,
+        controller: controller,
+        decoration: InputDecoration(
+          prefixIcon: icono,
+          suffixText: unidad,
+          suffixStyle: const TextStyle(color: Colors.white),
+          labelText: titulo,
+          labelStyle: const TextStyle(
+              fontSize: 15,
+              color: Colors.white,
+              shadows: <Shadow>[
+                Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0))
+              ]),
+
+          // border: InputBorder.none,
+          focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(
+                  color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+          enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(color: Colors.white, width: 1.3)),
+
+          //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
+        ));
+  }
+
+  //Función que calculará el valor de la produccion parcial
+  TextEditingController getProduccionParcial(
+      String biomasaInicial, String biomasaParcial) {
+    if (biomasaInicial != '' && biomasaParcial != '') {
+      _produccionParcialController.text =
+          (double.parse(biomasaParcial) - double.parse(biomasaInicial))
+              .toString();
+      return _produccionParcialController;
+    } else {
+      _produccionParcialController.text = '';
+      return _produccionParcialController;
+    }
+  }
+
+  //Función que calculará el valor de la produccion parcial
+  TextEditingController getTasaProduccion(
+      String produccionParcial, String dias) {
+    if (produccionParcial != '' && dias != '') {
+      _tasaDeProduccionController.text =
+          (double.parse(produccionParcial) / double.parse(dias)).toString();
+      return _tasaDeProduccionController;
+    } else {
+      _tasaDeProduccionController.text = '';
+      return _tasaDeProduccionController;
+    }
+  }
+
+  //Función que calculará el valor de la produccion parcial
+  TextEditingController getIndiceDeSupervivencia(
+      String cantidadPecesInicial, String cantidadPecesParcial) {
+    if (cantidadPecesInicial != '' && cantidadPecesParcial != '') {
+      _indiceDeSupervivenciaController.text =
+          ((double.parse(cantidadPecesParcial) * 100) /
+                  double.parse(cantidadPecesInicial))
+              .toString();
+      return _indiceDeSupervivenciaController;
+    } else {
+      _indiceDeSupervivenciaController.text = '';
+      return _indiceDeSupervivenciaController;
+    }
+  }
+
+  //Función que calculará el valor de la produccion parcial
+  TextEditingController getIndiceMortalidad(String indiceSupervivencia) {
+    if (indiceSupervivencia != '') {
+      _mortalidadController.text =
+          (100 - double.parse(indiceSupervivencia)).toString();
+      return _mortalidadController;
+    } else {
+      _mortalidadController.text = '';
+      return _mortalidadController;
+    }
+  }
+
+  //Función que calculará el valor del rendimiento final
+  TextEditingController getRendimiento(String produccion, String area) {
+    if (produccion != '' && area != '') {
+      _rendimientoController.text =
+          (double.parse(produccion) / double.parse(area)).toString();
+      return _rendimientoController;
+    } else {
+      _rendimientoController.text = '';
+      return _rendimientoController;
+    }
+  }
+
+  //Función que añadirá el muestreo de siembra a la base de datos
+  void addMuestreoControl(email, map) async {
+    //Utilizamos el email del usuario que se inició sesión
+    String? emailUsuario = email;
+    //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
+    debugPrint(emailUsuario);
+    //Realizamos una consulta en la base de datos sobre el usuario con ese email
+    var query = usuarios.where('email', isEqualTo: emailUsuario);
+    //Extraemos la consulta
+    QuerySnapshot user = await query.get();
+    //Obtenemos el id del usuario en la base de datos para realizar
+    var userID = user.docs[0].id;
+    //Mapeamos la información del muestreo de siembra
+    Map muestreo = map;
+    //Obtenemos la lista de muestreos de siembra del usuario
+    List<dynamic> muestreoCosechaUsuario = user.docs[0]['muestreo_control'];
+    //Añadimos un muestreo de siembra a la lista de muestreos del usuario
+    muestreoCosechaUsuario.add(muestreo);
+    //Actualizamos la información del usuario con el nuevo muestreo incluido
+    usuarios.doc(userID).update({'muestreo_control': muestreoCosechaUsuario});
   }
 }

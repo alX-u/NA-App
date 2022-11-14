@@ -57,7 +57,7 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
     super.initState();
     //La función de la búsqueda del muestreo se corre en la inicialización de la ventana, confirmando si la variable 'muestreo'
     //poseerá información o no
-    _fetchUltimoMuestreo(); //running initialisation code; getting prefs etc.
+    //_fetchUltimoMuestreo(); //running initialisation code; getting prefs etc.
   }
 
   @override
@@ -181,7 +181,7 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
             color: Color.fromARGB(255, 101, 170, 254)),
         child: Center(
           child: Text(
-            'Añadir Muestreo',
+            'Añadir Muestreo de Control',
             style: estiloTextoAzul(18),
           ),
         ),
