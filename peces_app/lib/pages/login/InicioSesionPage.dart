@@ -176,9 +176,14 @@ class _InicioSesionPage extends State<InicioSesionPage> {
         //Obtenemos la lista de siembras del usuario
         List<dynamic> siembras = user.docs[0]['muestreo_siembra'];
         List<dynamic> controles = user.docs[0]['muestreo_control'];
-        //Enviamos esta lista para que se conozca de forma global
-        await userController.setListaSiembras(siembras);
-        await userController.setListaControles(controles);
+        if (siembras.isNotEmpty) {
+          //Enviamos esta lista para que se conozca de forma global
+          await userController.setListaSiembras(siembras);
+        }
+        if (controles.isNotEmpty) {
+          //Enviamos esta lista para que se conozca de forma global
+          await userController.setListaControles(controles);
+        }
         if (emailUsuario != '') {
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
@@ -260,9 +265,15 @@ class _InicioSesionPage extends State<InicioSesionPage> {
           //Obtenemos la lista de siembras del usuario
           List<dynamic> siembras = user.docs[0]['muestreo_siembra'];
           List<dynamic> controles = user.docs[0]['muestreo_control'];
-          //Enviamos esta lista para que se conozca de forma global
-          await userController.setListaSiembras(siembras);
-          await userController.setListaControles(controles);
+          if (siembras.isNotEmpty) {
+            //Enviamos esta lista para que se conozca de forma global
+            await userController.setListaSiembras(siembras);
+          }
+          if (controles.isNotEmpty) {
+            //Enviamos esta lista para que se conozca de forma global
+            await userController.setListaControles(controles);
+          }
+
           //Vamos hacia la homepage
           Navigator.push(context,
               MaterialPageRoute(builder: (context) => const GeneralPage()));
