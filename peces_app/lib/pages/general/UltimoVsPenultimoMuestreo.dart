@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:get/get.dart';
@@ -314,6 +315,11 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
                                           color: Color.fromARGB(255, 0, 0, 0))
                                     ])))),
                   const SizedBox(height: 2),
+
+                  if (muestreos.isNotEmpty)
+                    TextButton(
+                        onPressed: deleteMuestreo,
+                        child: const Text('Eliminar Muestreo'))
                 ],
               ),
             )
@@ -412,7 +418,9 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
     for (var i = 0; i < userController.listaControles.length; i++) {
       if (userController.listaControles[i]['lote'] == userController.userLote &&
           userController.listaControles[i]['siembra'] == dropdownvalue) {
-        muestreos.add(userController.listaControles[i]);
+        setState(() {
+          muestreos.add(userController.listaControles[i]);
+        });
       }
     }
   }
@@ -450,6 +458,34 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
 
           //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
         ));
+  }
+
+  void deleteMuestreo() async {
+    //Utilizamos el email del usuario que se inició sesión
+    String? emailUsuario = userController.userEmail;
+    //Printeo para ver si lo recibe bien (tanto en el caso de Google como en el normal)
+    debugPrint(emailUsuario);
+    //Realizamos una consulta en la base de datos sobre el usuario con ese email
+    var query = usuarios.where('email', isEqualTo: emailUsuario);
+    //Extraemos la consulta
+    QuerySnapshot user = await query.get();
+    //Obtenemos el id del usuario en la base de datos para realizar
+    var userID = user.docs[0].id;
+    //Obtenemos la lista de lotes del usuario en cuestión
+    int pos = 0;
+    List<dynamic> muestreosUsuario = user.docs[0]['muestreo_control'];
+    for (var i = 0; i < muestreosUsuario.length; i++) {
+      if (muestreos[index]['lote'] == userController.userLote &&
+          muestreos[index]['siembra'] == muestreosUsuario[i]['siembra'] &&
+          muestreos[index]['fecha'] == muestreosUsuario[i]['fecha']) {
+        pos = i;
+      }
+    }
+    muestreosUsuario.removeAt(pos);
+    usuarios.doc(userID).update({'muestreo_control': muestreosUsuario});
+    await userController.setListaControles(muestreosUsuario);
+    obtenerControles();
+    //Actualizamos la información del usuario, añadiendo un lote a su n_lotes
   }
 }
 
