@@ -89,8 +89,8 @@ class _AddMuestreoCosechaState extends State<AddMuestreoCosecha> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Registra tu muestreo de cosecha:',
-                        style: estiloTexto(28)),
-                    const SizedBox(height: 30),
+                        style: estiloTexto(22)),
+                    const SizedBox(height: 20),
                     //Campo que indica la siembra sobre la que se hará la cosecha
                     listaDeSiembras(),
                     const SizedBox(height: 15),

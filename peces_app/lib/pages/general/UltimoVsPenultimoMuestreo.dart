@@ -1,21 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:get/get.dart';
+import 'package:material_design_icons_flutter/material_design_icons_flutter.dart';
 import 'package:peces_app/model/Muestreo.dart';
 
+import '../../domain/constants/firebase_constants.dart';
+import '../../domain/controllers/user_controller.dart';
 import 'ResumenMuestreoPage.dart';
 
 class UltimoVsPenultimoMuestreo extends StatefulWidget {
-  const UltimoVsPenultimoMuestreo(
-      {Key? key,
-      required this.muestreos,
-      required this.nLote,
-      required this.posLote})
-      : super(key: key);
+  const UltimoVsPenultimoMuestreo({Key? key}) : super(key: key);
 
-  final List<Muestreo>? muestreos;
   //Número del lote que obtenemos de la collection usuarios
-  final String nLote;
-  //Posición de ese lote en la el array
-  final int posLote;
   @override
   _UltimoVsPenultimoMuestreoState createState() =>
       _UltimoVsPenultimoMuestreoState();
@@ -23,6 +19,23 @@ class UltimoVsPenultimoMuestreo extends StatefulWidget {
 
 class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
   int index = 0;
+  UserController userController = Get.find();
+  String dropdownvalue = 'Escoja una Siembra';
+  String biomasaInicial = '';
+  String areaTanque = '';
+  String cantidadPecesInicial = '';
+
+  var usuarios = userFirebase;
+
+  // List of items in our dropdown menu
+  List<String> items = [];
+  List muestreos = [];
+
+  @override
+  void initState() {
+    super.initState();
+    obtenerSiembras();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -56,113 +69,102 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
                         color: Colors.white, size: 30)),
               ],
             ),
-            Center(child: Text(widget.nLote, style: estiloTexto(36))),
+            //Cuerpo de la página
+            Center(
+                child: Text(userController.userLote, style: estiloTexto(36))),
             Padding(
               padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 25),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
-                  Text('Resumen de tu muestreo: ', style: estiloTexto(30)),
+                  Text('Resumen de tus muestreos: ', style: estiloTexto(22)),
                   const SizedBox(height: 20),
-                  if (widget.muestreos!.isNotEmpty) buildMuestreosControl(),
-                  const SizedBox(height: 20),
-                  //Peces sembrados
-                  inputLabel('Peces Sembrados: '),
+                  //Campo que indica la siembra a la que pertenecen los muestreos
+                  listaDeSiembras(),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pecesSembrados,
-                      style: estiloTexto(20)),
-                  //Peso de la Siembra por Unidad
-                  const SizedBox(height: 20),
-                  inputLabel('Peso de la Siembra Por Unidad(en gr): '),
+                  if (muestreos.isNotEmpty) buildMuestreosControl(),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pesoSiembraPorUnidad,
-                      style: estiloTexto(20)),
-                  //Fecha
-                  const SizedBox(height: 20),
-                  inputLabel('Fecha: '),
+                  //Campo que indica la cantidad de peces en este muestreo
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Cantidad de peces: ' +
+                            muestreos[index]['cantidad_peces'],
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(
-                      dateFromGsheets(widget.muestreos![index].fecha)
-                          .toString(),
-                      style: estiloTexto(20)),
-                  //No. del Muestreo
-                  const SizedBox(height: 20),
-                  inputLabel('No. del Muestreo: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Biomasa Meta: ' +
+                            muestreos[index]['biomasa_meta'] +
+                            ' Kg',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].noMuestreo,
-                      style: estiloTexto(20)),
-                  //Peces Captura
-                  const SizedBox(height: 20),
-                  inputLabel('Peces Capturados: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Biomasa Parcial: ' +
+                            muestreos[index]['biomasa_parcial'] +
+                            ' Kg',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pecesCaptura,
-                      style: estiloTexto(20)),
-                  //Peso Captura
-                  const SizedBox(height: 20),
-                  inputLabel('Peso de la Captura: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text('Fecha: ' + muestreos[index]['fecha'],
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pesoCaptura,
-                      style: estiloTexto(20)),
-                  //Peso Promedio en gr
-                  const SizedBox(height: 20),
-                  inputLabel('Peso Promedio (en gr): '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text('Días Transcurridos: ' + muestreos[index]['dias'],
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pesoPromedioGR,
-                      style: estiloTexto(20)),
-                  //Semana
-                  const SizedBox(height: 20),
-                  inputLabel('Semana: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Producción Parcial: ' +
+                            muestreos[index]['produccion_parcial'] +
+                            ' Kg',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].semana, style: estiloTexto(20)),
-                  //Biomasa Parcial
-                  const SizedBox(height: 20),
-                  inputLabel('Biomasa Parcial (en Kg): '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Tasa de Producción: ' +
+                            muestreos[index]['tasa_de_produccion'] +
+                            ' Kg/día',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].biomasa,
-                      style: estiloTexto(20)),
-                  //Observaciones
-                  const SizedBox(height: 20),
-                  inputLabel('Observaciones: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Rendimiento Parcial: ' +
+                            muestreos[index]['rendimiento_parcial'] +
+                            ' Kg/m^2',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].observaciones,
-                      style: estiloTexto(20)),
-                  //Ganancia
-                  const SizedBox(height: 20),
-                  inputLabel('Ganancia Semanal: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Porcentaje de biomasa meta: ' +
+                            muestreos[index]['porcentaje_biomasa_meta'] +
+                            ' %',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].gananciaSemanal,
-                      style: estiloTexto(20)),
-                  //Peso Meta
-                  const SizedBox(height: 20),
-                  inputLabel('Peso Meta: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Índice de Supervivencia: ' +
+                            muestreos[index]['indice_supervivencia'] +
+                            ' %',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].pesoMeta,
-                      style: estiloTexto(20)),
-                  //Porcentaje Meta
-                  const SizedBox(height: 20),
-                  inputLabel('% Meta: '),
+                  //Campo que indica la biomasa meta
+                  if (muestreos.isNotEmpty)
+                    Text(
+                        'Índice de Mortalidad: ' +
+                            muestreos[index]['indice_mortalidad'] +
+                            ' %',
+                        style: const TextStyle(color: Colors.white)),
                   const SizedBox(height: 15),
-                  Text(widget.muestreos![index].porcentajeMeta,
-                      style: estiloTexto(20)),
-                  //Porcentaje Alimento
-                  const SizedBox(height: 20),
-                  inputLabel('% Alimento: '),
-                  const SizedBox(height: 15),
-                  Text(widget.muestreos![index].porcentajeAlimento,
-                      style: estiloTexto(20)),
-                  //Q Alimento
-                  const SizedBox(height: 20),
-                  inputLabel('Q Alimento: '),
-                  const SizedBox(height: 15),
-                  Text(widget.muestreos![index].qAlimento,
-                      style: estiloTexto(20)),
-                  // Mortalidad
-                  const SizedBox(height: 20),
-                  inputLabel('Mortalidad: '),
-                  const SizedBox(height: 15),
-                  Text(widget.muestreos![index].mortalidad,
-                      style: estiloTexto(20)),
-                  const SizedBox(height: 20),
                 ],
               ),
             )
@@ -176,9 +178,10 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
   //Widget y Métodos
 //Widgets y Métodos
   Widget buildMuestreosControl() => NavigateMuestreosWidget(
-      text: '${index + 1} /${widget.muestreos!.length} Muestreo',
+      text: '${index + 1} /${userController.listaControles.length} Muestreo',
       onClickedNext: () {
-        final nextIndex = index >= widget.muestreos!.length - 1 ? 0 : index + 1;
+        final nextIndex =
+            index >= userController.listaControles.length - 1 ? 0 : index + 1;
 
         setState(() {
           index = nextIndex;
@@ -186,37 +189,22 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
       },
       onClickedPrevious: () {
         final previousIndex =
-            index <= 0 ? widget.muestreos!.length - 1 : index - 1;
+            index <= 0 ? userController.listaControles.length - 1 : index - 1;
 
         setState(() {
           index = previousIndex;
         });
       });
 
-  //Pasamos el valor que obtenemos de la fecha de google sheets a un formato que se pueda leer bien
-  DateTime? dateFromGsheets(String value) {
-    const gsDateBase = 2209161600 / 86400;
-    const gsDateFactor = 86400000;
-    final date = double.tryParse(value);
-    if (date == null) return null;
-    final millis = (date - gsDateBase) * gsDateFactor;
-    return DateTime.fromMillisecondsSinceEpoch(millis.round(), isUtc: true);
-  }
-
-  //Estilo de los labels que irán arriba de cada formfield
-  Widget inputLabel(String input) {
-    return Text(input,
-        style: const TextStyle(
-            fontSize: 24,
-            color: Colors.white,
-            shadows: <Shadow>[
-              Shadow(
-                  offset: Offset(2.0, 2.0),
-                  blurRadius: 3.0,
-                  color: Color.fromARGB(255, 0, 0, 0))
-            ],
-            letterSpacing: 0.2));
-  }
+  // //Pasamos el valor que obtenemos de la fecha de google sheets a un formato que se pueda leer bien
+  // DateTime? dateFromGsheets(String value) {
+  //   const gsDateBase = 2209161600 / 86400;
+  //   const gsDateFactor = 86400000;
+  //   final date = double.tryParse(value);
+  //   if (date == null) return null;
+  //   final millis = (date - gsDateBase) * gsDateFactor;
+  //   return DateTime.fromMillisecondsSinceEpoch(millis.round(), isUtc: true);
+  // }
 
   //Estilo del texto general
   TextStyle estiloTexto(double size) {
@@ -229,6 +217,103 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
               blurRadius: 3.0,
               color: Color.fromARGB(255, 0, 0, 0))
         ]);
+  }
+
+  Widget listaDeSiembras() {
+    return DropdownButtonFormField(
+        items: items.map((String item) {
+          return DropdownMenuItem(
+              child: Text(item, style: const TextStyle(color: Colors.white)),
+              value: item);
+        }).toList(),
+        onChanged: (_value) => {
+              setState(() {
+                //Aquí va el código para cambiar los valores de la biomasa inicial y el tamaño del tanque
+                for (var i = 0; i < userController.listaSiembras.length; i++) {
+                  if (_value == userController.listaSiembras[i]['fecha'] &&
+                      userController.listaSiembras[i]['lote'] ==
+                          userController.userLote) {
+                    biomasaInicial =
+                        userController.listaSiembras[i]['biomasa_inicial'];
+                    areaTanque = userController.listaSiembras[i]['area'];
+                    cantidadPecesInicial =
+                        userController.listaSiembras[i]['peces_sembrados'];
+                    debugPrint(
+                        'Biomasa Inicial de la siembra: ' + biomasaInicial);
+                    debugPrint('Área de la siembra: ' + areaTanque);
+                  }
+                }
+                dropdownvalue = _value.toString();
+                obtenerControles();
+              })
+            },
+        hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
+        icon: const Icon(
+          MdiIcons.fishbowl,
+          color: Color.fromARGB(255, 101, 170, 254),
+        ),
+        dropdownColor: const Color.fromARGB(255, 101, 170, 254),
+        decoration: const InputDecoration(
+            labelText: 'Siembra',
+            enabledBorder: UnderlineInputBorder(
+                borderSide: BorderSide(color: Colors.white)),
+            labelStyle: TextStyle(
+              color: Colors.white,
+            )));
+  }
+
+  //Función para obtener las fechas de la lista de siembras
+  void obtenerSiembras() {
+    for (var i = 0; i < userController.listaSiembras.length; i++) {
+      if (userController.listaSiembras[i]['lote'] == userController.userLote) {
+        items.add(userController.listaSiembras[i]['fecha']);
+      }
+    }
+  }
+
+  //Función para obtener los muestreos de la lista de controles
+  void obtenerControles() {
+    for (var i = 0; i < userController.listaControles.length; i++) {
+      if (userController.listaControles[i]['lote'] == userController.userLote &&
+          userController.listaControles[i]['siembra'] == dropdownvalue) {
+        muestreos.add(userController.listaControles[i]);
+      }
+    }
+  }
+
+  //Widget para los campos que serán calculados
+  Widget campoCalculado(String titulo, String unidad, Icon icono,
+      TextEditingController controller) {
+    return TextField(
+        style: const TextStyle(color: Colors.white),
+        readOnly: true,
+        controller: controller,
+        decoration: InputDecoration(
+          prefixIcon: icono,
+          suffixText: unidad,
+          suffixStyle: const TextStyle(color: Colors.white),
+          labelText: titulo,
+          labelStyle: const TextStyle(
+              fontSize: 15,
+              color: Colors.white,
+              shadows: <Shadow>[
+                Shadow(
+                    offset: Offset(2.0, 2.0),
+                    blurRadius: 3.0,
+                    color: Color.fromARGB(255, 0, 0, 0))
+              ]),
+
+          // border: InputBorder.none,
+          focusedBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(
+                  color: Color.fromARGB(255, 101, 170, 254), width: 3)),
+          enabledBorder: const OutlineInputBorder(
+              borderRadius: BorderRadius.all(Radius.circular(20.0)),
+              borderSide: BorderSide(color: Colors.white, width: 1.3)),
+
+          //contentPadding: EdgeInsets.symmetric(vertical: 20, horizontal: 15)
+        ));
   }
 }
 

@@ -11,11 +11,13 @@ class UserController extends GetxController {
   final RxString _userLote = 'Ejemplo'.obs;
   final RxInt _userLotePos = 0.obs;
   final RxList _listaSiembras = [].obs;
+  final RxList _listaControles = [].obs;
 
   String get userEmail => _userEmail.value;
   String get userLote => _userLote.value;
   int get userLotePos => _userLotePos.value;
   List get listaSiembras => _listaSiembras;
+  List get listaControles => _listaControles;
 
   void setUserEmail() {
     AuthClass authClass = AuthClass();
@@ -54,11 +56,22 @@ class UserController extends GetxController {
   }
 
   //Obtener la lista de siembras de un determinado lote en la base de datos del usuario
-  void setListaSiembras(List list) {
+  Future<void> setListaSiembras(List list) async {
     _listaSiembras.value = list;
+    debugPrint(_listaSiembras[0]['fecha']);
   }
 
   void addSiembra(Map map) {
     _listaSiembras.add(map);
+  }
+
+//Obtener la lista de siembras de un determinado lote en la base de datos del usuario
+  Future<void> setListaControles(List list) async {
+    _listaControles.value = list;
+    debugPrint(_listaControles[0]['lote']);
+  }
+
+  void addControl(Map map) {
+    _listaControles.add(map);
   }
 }

@@ -108,6 +108,9 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    Text('Registra tu muestreo de control:',
+                        style: estiloTexto(22)),
+                    const SizedBox(height: 20),
                     //Campo que indica la siembra a la que pertenece el muestreo
                     listaDeSiembras(),
                     const SizedBox(height: 15),
@@ -377,6 +380,7 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
 
             //Enviamos la información a la base de datos
             addMuestreoControl(userController.userEmail, map);
+            userController.addControl(map);
             showDialog(
                 context: context,
                 builder: (context) => AlertDialog(
@@ -473,9 +477,7 @@ class _AddMuestreoPageState extends State<AddMuestreoPage> {
                     areaTanque = userController.listaSiembras[i]['area'];
                     cantidadPecesInicial =
                         userController.listaSiembras[i]['peces_sembrados'];
-                    debugPrint(
-                        'Biomasa Inicial de la siembra: ' + biomasaInicial);
-                    debugPrint('Área de la siembra: ' + areaTanque);
+                    debugPrint('Biomasa: ' + biomasaInicial);
                   }
                 }
                 dropdownvalue = _value.toString();

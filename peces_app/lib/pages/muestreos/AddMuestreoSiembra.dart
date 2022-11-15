@@ -75,8 +75,8 @@ class _AddMuestreoSiembraState extends State<AddMuestreoSiembra> {
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text('Registra tu muestreo de siembra:',
-                        style: estiloTexto(28)),
-                    const SizedBox(height: 30),
+                        style: estiloTexto(22)),
+                    const SizedBox(height: 20),
                     //Input de los peces sembrados
                     formField(
                         'Peces Sembrados',

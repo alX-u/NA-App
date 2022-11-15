@@ -92,13 +92,6 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
           const SizedBox(height: 15),
           botonAddCosecha(),
           const SizedBox(height: 30),
-          Center(
-              child: Text('Último peso promedio registrado:',
-                  style: estiloTexto(18))),
-          const SizedBox(height: 15),
-          Center(
-              child: Text(muestreo?.pesoPromedioGR ?? 'Buscando...',
-                  style: estiloTexto(20)))
         ],
       ),
     );
@@ -142,10 +135,7 @@ class _ResumenMuestreoPageState extends State<ResumenMuestreoPage> {
         Navigator.push(
             context,
             MaterialPageRoute(
-                builder: (context) => UltimoVsPenultimoMuestreo(
-                    muestreos: muestreos,
-                    nLote: userController.userLote,
-                    posLote: userController.userLotePos)));
+                builder: (context) => const UltimoVsPenultimoMuestreo()));
       },
       child: Container(
         height: 60,
