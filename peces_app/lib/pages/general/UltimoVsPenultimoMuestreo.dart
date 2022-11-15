@@ -327,18 +327,16 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
   //Widget y Métodos
 //Widgets y Métodos
   Widget buildMuestreosControl() => NavigateMuestreosWidget(
-      text: '${index + 1} /${userController.listaControles.length} Muestreo',
+      text: '${index + 1} /${muestreos.length} Muestreo',
       onClickedNext: () {
-        final nextIndex =
-            index >= userController.listaControles.length - 1 ? 0 : index + 1;
+        final nextIndex = index >= muestreos.length - 1 ? 0 : index + 1;
 
         setState(() {
           index = nextIndex;
         });
       },
       onClickedPrevious: () {
-        final previousIndex =
-            index <= 0 ? userController.listaControles.length - 1 : index - 1;
+        final previousIndex = index <= 0 ? muestreos.length - 1 : index - 1;
 
         setState(() {
           index = previousIndex;
@@ -377,24 +375,9 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
         }).toList(),
         onChanged: (_value) => {
               setState(() {
-                //Aquí va el código para cambiar los valores de la biomasa inicial y el tamaño del tanque
-                for (var i = 0; i < userController.listaSiembras.length; i++) {
-                  if (_value == userController.listaSiembras[i]['fecha'] &&
-                      userController.listaSiembras[i]['lote'] ==
-                          userController.userLote) {
-                    biomasaInicial =
-                        userController.listaSiembras[i]['biomasa_inicial'];
-                    areaTanque = userController.listaSiembras[i]['area'];
-                    cantidadPecesInicial =
-                        userController.listaSiembras[i]['peces_sembrados'];
-                    debugPrint(
-                        'Biomasa Inicial de la siembra: ' + biomasaInicial);
-                    debugPrint('Área de la siembra: ' + areaTanque);
-                  }
-                }
+                //Escogemos el nuevo valor del dropDownMenu, es decir, la siembra que estamos trabajando en este momento
                 dropdownvalue = _value.toString();
                 obtenerControles();
-                debugPrint(muestreos[0]['fecha']);
               })
             },
         hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
@@ -423,6 +406,8 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
 
   //Función para obtener los muestreos de la lista de controles
   void obtenerControles() {
+    muestreos = [];
+    debugPrint(userController.listaControles.length.toString());
     for (var i = 0; i < userController.listaControles.length; i++) {
       if (userController.listaControles[i]['lote'] == userController.userLote &&
           userController.listaControles[i]['siembra'] == dropdownvalue) {
