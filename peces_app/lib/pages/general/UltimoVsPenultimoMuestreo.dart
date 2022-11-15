@@ -45,9 +45,9 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
       width: MediaQuery.of(context).size.width,
       decoration: const BoxDecoration(
           gradient: LinearGradient(colors: [
-        Color(0xFF42008D),
-        Color(0xFF26007B),
-        Color(0xFF0A0068)
+        Color.fromARGB(255, 44, 44, 44),
+        Color.fromARGB(255, 34, 34, 34),
+        Color.fromARGB(255, 14, 14, 14)
       ])),
       child: SingleChildScrollView(
         child: Column(
@@ -86,85 +86,234 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
                   const SizedBox(height: 15),
                   //Campo que indica la cantidad de peces en este muestreo
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Cantidad de peces: ' +
-                            muestreos[index]['cantidad_peces'],
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Cantidad de peces: ' +
+                                    muestreos[index]['cantidad_peces'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Biomasa Meta: ' +
-                            muestreos[index]['biomasa_meta'] +
-                            ' Kg',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Biomasa Meta: ' +
+                                    muestreos[index]['biomasa_meta'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Biomasa Parcial: ' +
-                            muestreos[index]['biomasa_parcial'] +
-                            ' Kg',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Biomasa parcial: ' +
+                                    muestreos[index]['biomasa_parcial'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text('Fecha: ' + muestreos[index]['fecha'],
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Fecha: ' + muestreos[index]['fecha'] + ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text('Días Transcurridos: ' + muestreos[index]['dias'],
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Dias transcurridos: ' +
+                                    muestreos[index]['dias'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Producción Parcial: ' +
-                            muestreos[index]['produccion_parcial'] +
-                            ' Kg',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Produccion parcial: ' +
+                                    muestreos[index]['produccion_parcial'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Tasa de Producción: ' +
-                            muestreos[index]['tasa_de_produccion'] +
-                            ' Kg/día',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Tasa de produccion: ' +
+                                    muestreos[index]['tasa_de_produccion'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Rendimiento Parcial: ' +
-                            muestreos[index]['rendimiento_parcial'] +
-                            ' Kg/m^2',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Rendimiento parcial: ' +
+                                    muestreos[index]['rendimiento_parcial'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Porcentaje de biomasa meta: ' +
-                            muestreos[index]['porcentaje_biomasa_meta'] +
-                            ' %',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Porcentaje de biomasa meta: ' +
+                                    muestreos[index]
+                                        ['porcentaje_biomasa_meta'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Índice de Supervivencia: ' +
-                            muestreos[index]['indice_supervivencia'] +
-                            ' %',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Indice de supervivencia: ' +
+                                    muestreos[index]['indice_supervivencia'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                   //Campo que indica la biomasa meta
                   if (muestreos.isNotEmpty)
-                    Text(
-                        'Índice de Mortalidad: ' +
-                            muestreos[index]['indice_mortalidad'] +
-                            ' %',
-                        style: const TextStyle(color: Colors.white)),
-                  const SizedBox(height: 15),
+                    SizedBox(
+                        height: 35,
+                        width: 400,
+                        child: Card(
+                            color: const Color.fromARGB(255, 72, 73, 75),
+                            child: Text(
+                                ' Indice de mortalidad: ' +
+                                    muestreos[index]['indice_mortalidad'] +
+                                    ' Kg',
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 16,
+                                    shadows: <Shadow>[
+                                      Shadow(
+                                          offset: Offset(1.5, 1.5),
+                                          blurRadius: 3.0,
+                                          color: Color.fromARGB(255, 0, 0, 0))
+                                    ])))),
+                  const SizedBox(height: 2),
                 ],
               ),
             )
@@ -245,6 +394,7 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
                 }
                 dropdownvalue = _value.toString();
                 obtenerControles();
+                debugPrint(muestreos[0]['fecha']);
               })
             },
         hint: Text(dropdownvalue, style: const TextStyle(color: Colors.white)),
