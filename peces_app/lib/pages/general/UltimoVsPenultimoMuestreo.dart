@@ -407,6 +407,7 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
   //Función para obtener los muestreos de la lista de controles
   void obtenerControles() {
     muestreos = [];
+    index = 0;
     debugPrint(userController.listaControles.length.toString());
     for (var i = 0; i < userController.listaControles.length; i++) {
       if (userController.listaControles[i]['lote'] == userController.userLote &&
