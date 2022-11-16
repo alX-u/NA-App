@@ -314,12 +314,29 @@ class _UltimoVsPenultimoMuestreoState extends State<UltimoVsPenultimoMuestreo> {
                                           blurRadius: 3.0,
                                           color: Color.fromARGB(255, 0, 0, 0))
                                     ])))),
-                  const SizedBox(height: 2),
+                  const SizedBox(height: 7),
 
                   if (muestreos.isNotEmpty)
-                    TextButton(
-                        onPressed: deleteMuestreo,
-                        child: const Text('Eliminar Muestreo'))
+                    Container(
+                        margin: const EdgeInsets.only(left: 5),
+                        width: 333,
+                        height: 26,
+                        child: TextButton.icon(
+                          onPressed: deleteMuestreo,
+                          label: const Text(
+                            'Eliminar Muestreo',
+                            style: TextStyle(fontSize: 16, color: Colors.white),
+                          ),
+                          icon: const Icon(
+                            MdiIcons.trashCan,
+                            size: 25,
+                            color: Colors.white,
+                          ),
+                          style: TextButton.styleFrom(
+                              backgroundColor: Colors.red,
+                              alignment: Alignment.center,
+                              padding: const EdgeInsets.only(bottom: 1)),
+                        ))
                 ],
               ),
             )
